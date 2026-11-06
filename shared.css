@@ -1,0 +1,423 @@
+/* ============================================================
+   shared.css — AVCEARCH Brand Production Styling
+   ============================================================ */
+:root {
+  /* ── AVCEARCH Master Color Palette ── */
+  --brand-crimson: #b91c1c;
+  --brand-crimson-dark: #7f1d1d;
+  --onyx-deep: #0f172a;
+  --onyx-surface: #1e293b;
+  
+  /* ── UI Element Overrides ── */
+  --cloud-bg: rgba(255, 255, 255, 0.65);
+  --cloud-border: rgba(226, 232, 240, 0.8);
+  --cloud-glow: 0 8px 32px 0 rgba(127, 29, 29, 0.04);
+  --sky-primary: var(--brand-crimson);
+  --sky-grad: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+  
+  /* ── Brand Shadows ── */
+  --premium-glow: 0 10px 30px rgba(185, 28, 28, 0.15);
+}
+
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+}
+
+body { 
+  background: #f8fafc; 
+  color: var(--text-dark); 
+  min-height: 100vh; 
+  overflow-x: hidden; 
+}
+
+/* ── Premium Asymmetric Gradient Background Mesh ── */
+.bg-mesh {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100vw; 
+  height: 100vh; 
+  z-index: -2;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(185, 28, 28, 0.07) 0, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(15, 23, 42, 0.06) 0, transparent 50%);
+}
+
+/* ── Elite Navigation Bar ── */
+.navbar {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 16px 40px;
+  background: rgba(255, 255, 255, 0.8); 
+  backdrop-filter: blur(16px); 
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(185, 28, 28, 0.1); 
+  position: sticky; 
+  top: 0; 
+  z-index: 100;
+}
+
+.nav-logo { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  text-decoration: none; 
+  color: var(--text-dark); 
+  font-weight: 900; 
+  font-size: 1.35rem; 
+  letter-spacing: -0.03em;
+}
+
+.nav-logo span span { 
+  color: var(--brand-crimson); 
+}
+
+.nav-search { 
+  display: flex; 
+  align-items: center; 
+  background: #ffffff; 
+  padding: 8px 16px; 
+  border-radius: 99px; 
+  border: 1px solid #cbd5e1; 
+  width: 320px; 
+  transition: all 0.2s ease;
+}
+
+.nav-search:focus-within {
+  border-color: var(--brand-crimson);
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.1);
+}
+
+.nav-search input { 
+  border: none; 
+  background: transparent; 
+  outline: none; 
+  margin-left: 8px; 
+  width: 100%; 
+  font-size: 0.9rem; 
+  color: var(--text-dark);
+}
+
+.nav-links { 
+  display: flex; 
+  gap: 24px; 
+}
+
+.nav-link { 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+  text-decoration: none; 
+  color: var(--text-muted); 
+  font-size: 0.95rem; 
+  font-weight: 600; 
+  transition: color 0.2s; 
+}
+
+.nav-link:hover, .nav-link.active { 
+  color: var(--brand-crimson); 
+}
+
+.nav-upload-btn { 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+  background: var(--sky-grad); 
+  color: white; 
+  text-decoration: none; 
+  padding: 10px 20px; 
+  border-radius: 12px; 
+  font-weight: 700; 
+  font-size: 0.9rem; 
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.2); 
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav-upload-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(185, 28, 28, 0.3);
+}
+
+.nav-menu-btn { 
+  display: none; 
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+}
+
+/* ── Content Grid Display Architectures ── */
+.page-wrapper { 
+  max-width: 1240px; 
+  margin: 40px auto; 
+  padding: 0 24px; 
+}
+
+.research-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  gap: 28px; 
+  margin-top: 24px; 
+}
+
+.research-card { 
+  background: #ffffff; 
+  border: 1px solid var(--cloud-border); 
+  border-radius: 20px; 
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.02); 
+  overflow: hidden; 
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease; 
+}
+
+.research-card:hover { 
+  transform: translateY(-6px); 
+  box-shadow: 0 20px 40px rgba(185, 28, 28, 0.06), 0 1px 3px rgba(15, 23, 42, 0.05); 
+  border-color: rgba(185, 28, 28, 0.15);
+}
+
+/* ── Structural Actions Components (Buttons & Badges) ── */
+.btn { 
+  padding: 12px 24px; 
+  font-weight: 700; 
+  border-radius: 12px; 
+  border: none; 
+  cursor: pointer; 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 8px; 
+  text-decoration: none; 
+  font-size: 0.95rem; 
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); 
+}
+
+.btn-primary { 
+  background: var(--sky-grad); 
+  color: white !important; 
+  box-shadow: var(--premium-glow); 
+}
+
+.btn-primary:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 12px 35px rgba(185, 28, 28, 0.3); 
+}
+
+.btn-secondary { 
+  background: #ffffff; 
+  color: var(--text-dark); 
+  border: 1px solid #e2e8f0; 
+}
+
+.btn-secondary:hover { 
+  background: #f8fafc; 
+  border-color: #cbd5e1;
+  color: var(--brand-crimson);
+}
+
+.badge { 
+  display: inline-block; 
+  padding: 6px 10px; 
+  font-size: 0.75rem; 
+  font-weight: 700; 
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 6px; 
+  width: max-content; 
+}
+
+/* ── Interactive Form Interfaces & Glass Overlay Portals ── */
+.upload-overlay { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100vw; 
+  height: 100vh; 
+  background: rgba(15, 23, 42, 0.6); 
+  backdrop-filter: blur(16px); 
+  -webkit-backdrop-filter: blur(16px); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  z-index: 9999; 
+}
+
+.upload-progress-card { 
+  background: #ffffff; 
+  border-radius: 24px; 
+  padding: 36px; 
+  width: 100%; 
+  max-width: 420px; 
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2); 
+  border: 1px solid rgba(255, 255, 255, 0.7); 
+}
+
+.form-label { 
+  display: block; 
+  font-weight: 700; 
+  font-size: 0.85rem; 
+  color: var(--text-dark); 
+  margin-bottom: 6px; 
+}
+
+.form-input, .form-select, .form-textarea { 
+  width: 100%; 
+  padding: 12px 14px; 
+  background: #ffffff; 
+  border: 1px solid #cbd5e1; 
+  border-radius: 12px; 
+  font-size: 0.95rem; 
+  color: var(--text-dark); 
+  outline: none; 
+  transition: all 0.2s; 
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus { 
+  border-color: var(--brand-crimson); 
+  box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.1); 
+}
+
+.upload-submit-btn { 
+  width: 100%; 
+  margin-top: 24px; 
+  padding: 14px; 
+  background: var(--sky-grad); 
+  color: white; 
+  border: none; 
+  border-radius: 12px; 
+  font-size: 1rem; 
+  font-weight: 700; 
+  cursor: pointer; 
+  box-shadow: var(--premium-glow); 
+  transition: all 0.2s;
+}
+
+.upload-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(185, 28, 28, 0.3);
+}
+
+/* ── Live Microfeedback Engine (Toasts) ── */
+#toast-container { 
+  position: fixed; 
+  bottom: 24px; 
+  right: 24px; 
+  z-index: 10000; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 10px; 
+}
+
+.toast { 
+  background: var(--onyx-deep); 
+  color: white; 
+  padding: 14px 24px; 
+  border-radius: 12px; 
+  font-size: 0.9rem; 
+  font-weight: 600; 
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+  border-left: 4px solid var(--brand-crimson);
+  animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+}
+
+@keyframes slideIn { 
+  from { transform: translateY(20px); opacity: 0; } 
+  to { transform: translateY(0); opacity: 1; } 
+}
+
+/* ── Responsive Viewport Scaling Rules ── */
+@media (max-width: 768px) {
+  .nav-links, .nav-search { display: none; }
+  .nav-menu-btn { display: block; }
+  .navbar { padding: 16px 24px; }
+}
+/* ============================================================
+   AVCEARCH Ultra-Responsive Architecture Upgrades
+   ============================================================ */
+
+/* 1. Global Viewport Safety Rails */
+img, svg, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 2. Enhanced Tablet & Laptop Scale Rules (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 16px 24px;
+  }
+  .nav-search {
+    width: 240px; /* Slims down search box so nav elements don't collide */
+  }
+  .nav-links {
+    gap: 16px;
+  }
+  .hero-title {
+    font-size: 2.8rem; /* Keeps long titles from breaking awkwardly */
+  }
+}
+
+/* 3. Aggressive Mobile Deep-Cleaning (max-width: 768px) */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 0 32px 0;
+  }
+  
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero-actions {
+    justify-content: center;
+    flex-direction: column; /* Stacks CTAs safely so text never overflows button bounds */
+    width: 100%;
+    gap: 12px;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Structural Strip Collapse */
+  .stats-inner {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .stat-item {
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 16px;
+  }
+
+  .stat-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  /* Grid optimization for single-column mobile views */
+  .research-grid {
+    grid-template-columns: 1fr; 
+    gap: 16px;
+  }
+  
+  /* Hides profile layout elements gracefully in tiny navbar views */
+  #navUploadBtn, #navProfileAvatar {
+    display: none !important;
+  }
+}
+
+/* 4. Large Monitor Ultra-Wide Support (min-width: 1440px) */
+@media (min-width: 1440px) {
+  .page-wrapper {
+    max-width: 1400px; /* Dynamically expands workspace canvas for premium spatial symmetry */
+  }
+  .research-grid {
+    grid-template-columns: repeat(4, 1fr); /* Snaps cards into perfect quad-view layout */
+  }
+}

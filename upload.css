@@ -1,0 +1,273 @@
+/* upload.css */
+
+.upload-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 60px 80px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.upload-header {
+  margin-bottom: 32px;
+}
+.upload-header h1 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+.upload-header p { color: var(--text-2); }
+
+/* ── Form ─────────────────────────────────────────────────── */
+.form-group { margin-bottom: 24px; }
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 8px;
+  letter-spacing: 0.01em;
+}
+.required { color: var(--accent); }
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  color: var(--text-1);
+  transition: border-color var(--t-base), box-shadow var(--t-base);
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+  outline: none;
+}
+.form-input.error,
+.form-select.error,
+.form-textarea.error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(255,77,109,0.12);
+}
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235c6b8a' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+.form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+.char-count {
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+/* ── Drop zones ──────────────────────────────────────────── */
+.drop-zone {
+  position: relative;
+  border: 2px dashed var(--border);
+  border-radius: var(--r-lg);
+  transition: all var(--t-base);
+  overflow: hidden;
+  min-height: 130px;
+}
+.drop-zone:hover,
+.drop-zone.drag-over {
+  border-color: var(--accent-2);
+  background: var(--accent-dim);
+}
+.dz-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 28px 20px;
+  text-align: center;
+}
+.dz-icon   { font-size: 2rem; }
+.dz-title  { font-weight: 600; font-size: 0.9rem; color: var(--text-1); }
+.dz-sub    { font-size: 0.78rem; color: var(--text-3); }
+.dz-btn    { margin-top: 10px; padding: 7px 18px; font-size: 0.82rem; }
+
+/* Banner preview */
+.dz-preview {
+  position: relative;
+  width: 100%;
+}
+.dz-preview img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+/* File selected state */
+.dz-file-selected {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+}
+.dfs-icon { font-size: 2rem; flex-shrink: 0; }
+.dfs-info { flex: 1; min-width: 0; }
+.dfs-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dfs-size { font-size: 0.78rem; color: var(--text-3); margin-top: 2px; }
+
+/* Remove button */
+.dz-remove {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: var(--text-1);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: background var(--t-base);
+}
+.dz-remove:hover { background: var(--danger); }
+.dz-file-selected .dz-remove {
+  position: static;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--bg-4);
+  flex-shrink: 0;
+}
+
+/* Submit button */
+.upload-submit-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+/* ── Info column ─────────────────────────────────────────── */
+.upload-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: calc(var(--nav-h) + 24px);
+  align-self: start;
+}
+
+.info-card {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 20px;
+}
+.info-card h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  color: var(--text-1);
+}
+.info-card p {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+.info-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.info-card ul li {
+  font-size: 0.84rem;
+  color: var(--text-2);
+  padding-left: 18px;
+  position: relative;
+  line-height: 1.5;
+}
+.info-card ul li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── Upload overlay ──────────────────────────────────────── */
+.upload-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 11, 20, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+}
+
+.upload-progress-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 40px 48px;
+  text-align: center;
+  min-width: 320px;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+}
+
+.upc-spinner {
+  width: 56px; height: 56px;
+  border: 3px solid var(--bg-4);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.upc-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.upc-sub { font-size: 0.85rem; color: var(--text-3); margin-bottom: 4px; }
+.upc-percent { font-size: 0.8rem; color: var(--accent); margin-top: 8px; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .upload-layout {
+    grid-template-columns: 1fr;
+    padding: 32px 32px 60px;
+  }
+  .upload-info-col { position: static; }
+}
+@media (max-width: 480px) {
+  .upload-layout { padding: 24px 16px 48px; }
+}

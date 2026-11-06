@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AVCEARCH</title>
+  <link rel="icon" type="image/png" href="avc.png" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+  /* ── Premium Brand Color System Variables ── */
+  :root {
+    --brand-crimson: #b91c1c;
+    --brand-crimson-dark: #7f1d1d;
+    --brand-gold: #f59e0b;
+    --onyx-deep: #0f172a;
+    --onyx-surface: #1e293b;
+    --premium-grad: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+    --gold-glow: 0 0 20px rgba(245, 158, 11, 0.15);
+    --crimson-glow: 0 10px 30px rgba(185, 28, 28, 0.15);
+    --error-red: #ef4444;
+    --success-green: #10b981;
+  }
+
+  /* ── Cross-Device Layout Normalization ── */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevents unwanted horizontal scrolling on mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .page-wrapper {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ── Navbar Layout Engine ── */
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .nav-logo {
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+  .nav-link {
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--onyx-surface);
+    transition: color 0.2s ease;
+  }
+  .nav-link:hover, .nav-link.active {
+    color: var(--brand-crimson);
+  }
+  .nav-search {
+    flex: 1;
+    max-width: 400px;
+    width: 100%;
+  }
+  .nav-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  /* ── Hero Section Architecture ── */
+  .hero { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 40px; 
+    padding: 80px 0 60px 0; 
+  }
+  .hero-content { 
+    max-width: 650px; 
+    width: 100%;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(185, 28, 28, 0.08);
+    color: var(--brand-crimson);
+    border: 1px solid rgba(185, 28, 28, 0.15);
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 24px;
+  }
+  .hero-title { 
+    font-size: 3.5rem; 
+    font-weight: 900; 
+    line-height: 1.1; 
+    margin: 0 0 20px 0; 
+    letter-spacing: -0.03em; 
+    color: var(--onyx-deep); 
+  }
+  .hero-title-accent { 
+    background: var(--premium-grad); 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+  }
+  .hero-subtitle { 
+    color: #64748b; 
+    font-size: 1.15rem; 
+    line-height: 1.6; 
+    margin: 0 0 36px 0; 
+  }
+  .hero-actions { 
+    display: flex; 
+    gap: 16px; 
+    flex-wrap: wrap;
+  }
+
+  /* Premium Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    padding: 10px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-secondary {
+    background: #f1f5f9;
+    color: var(--onyx-deep);
+    border: 1px solid #e2e8f0;
+    font-weight: 600;
+  }
+  .btn-secondary:hover {
+    background: #e2e8f0;
+  }
+  .btn-brand-primary {
+    background: var(--premium-grad);
+    color: #ffffff !important;
+    border: none;
+    font-weight: 700;
+    box-shadow: var(--crimson-glow);
+  }
+  .btn-brand-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(185, 28, 28, 0.25);
+  }
+
+  /* ── Live Performance Metrics Strip ── */
+  .stats-strip {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 32px;
+    margin-bottom: 64px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.03);
+    position: relative;
+    overflow: hidden;
+  }
+  .stats-strip::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 4px;
+    background: var(--premium-grad);
+  }
+  .stats-inner { 
+    display: flex; 
+    justify-content: space-around; 
+    text-align: center; 
+    gap: 20px; 
+  }
+  .stat-item {
+    flex: 1;
+  }
+  .stat-number { font-size: 2.5rem; font-weight: 900; color: var(--onyx-deep); letter-spacing: -0.02em; }
+  .stat-label { font-size: 0.85rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px; }
+
+  /* Section Structural Core */
+  .home-section { margin-top: 56px; margin-bottom: 56px; }
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .section-title { font-size: 1.75rem; font-weight: 900; letter-spacing: -0.02em; color: var(--onyx-deep); margin: 0; }
+  .title-accent { color: var(--brand-crimson); }
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  /* ── Logo Layout ── */
+  .brand-crest-wrapper { display: flex; align-items: center; gap: 10px; }
+  .mini-shield {
+    width: 32px;
+    height: 32px;
+    background: var(--premium-grad);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 900;
+    box-shadow: 0 4px 10px rgba(185, 28, 28, 0.3);
+  }
+  .logo-text-premium { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.03em; color: var(--onyx-deep); }
+  .logo-text-premium span { color: var(--brand-crimson); }
+
+  /* Desktop Avatar Link Element */
+  .nav-avatar-link {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--premium-grad);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+    cursor: pointer;
+    box-shadow: var(--crimson-glow);
+  }
+  .nav-avatar-link:hover { transform: scale(1.05); border-color: var(--brand-crimson); }
+
+  /* Inputs & Forms Engine */
+  .form-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--onyx-surface);
+    margin-bottom: 6px;
+  }
+
+  /* Predictive Search Interface */
+  .search-wrapper { position: relative; display: block; width: 100%; }
+  .search-main-input { background: #ffffff; width: 100%; }
+  .search-main-input:focus { border-color: var(--brand-crimson); box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.1); }
+
+  .search-dropdown-menu {
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: 999;
+    display: none;
+    margin-top: 8px;
+    padding: 6px 0;
+  }
+
+  /* ── Support Floating Button ── */
+  .support-floating-action-button {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 60px;
+    height: 60px;
+    background: var(--onyx-deep);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 9990; /* Setup structural stack layout under drawer tier */
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .support-floating-action-button:hover {
+    transform: translateY(-4px) scale(1.05);
+    background: var(--brand-crimson);
+    box-shadow: var(--crimson-glow);
+  }
+  .support-floating-action-button svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .support-floating-action-button::after {
+    content: ''; position: absolute; top: -2px; right: -2px; width: 12px; height: 12px;
+    background: #22c55e; border-radius: 50%; border: 2px solid var(--onyx-deep);
+  }
+
+  .upload-submit-btn-brand {
+    width: 100%; padding: 12px; background: var(--premium-grad); color: white; border: none;
+    border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; box-shadow: var(--crimson-glow);
+    transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .upload-submit-btn-brand:disabled { background: #64748b; cursor: not-allowed; box-shadow: none; opacity: 0.7; }
+  .auth-toggle-link { color: var(--brand-crimson); font-weight: 700; text-decoration: none; cursor: pointer; }
+
+  /* ── Password Fields ── */
+  .password-input-wrapper { position: relative; width: 100%; }
+  .password-input-wrapper .form-input { padding-right: 44px; }
+  .password-toggle-btn {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: #94a3b8; cursor: pointer; padding: 4px;
+    display: flex; align-items: center; justify-content: center; z-index: 10;
+  }
+  .password-toggle-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+  /* Auth Modal Frame Setup */
+  .upload-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+    padding: 16px;
+  }
+  .upload-progress-card {
+    background: white;
+    padding: 32px;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Core Micro-interactions */
+  @keyframes modalShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+  }
+  @keyframes inlineSpinner { to { transform: rotate(360deg); } }
+
+  .auth-card-error-active { animation: modalShake 0.4s cubic-bezier(.36,.07,.19,.97) both; border: 1px solid var(--error-red) !important; }
+  .auth-card-success-active { border: 1px solid var(--success-green) !important; }
+  .inline-loader { width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #ffffff; border-radius: 50%; animation: inlineSpinner 0.6s linear infinite; }
+
+  /* System Feedback Messaging Architecture */
+  .system-feedback-banner { padding: 14px; border-radius: 12px; font-size: 0.88rem; font-weight: 600; margin-bottom: 20px; display: none; align-items: flex-start; gap: 10px; line-height: 1.5; }
+  .system-feedback-banner.show { display: flex; }
+  .system-feedback-banner.error { background: #fef2f2; color: #991b1b; border: 1px solid #fee2e2; }
+  .system-feedback-banner.success { background: #f0fdf4; color: #166534; border: 1px solid #dcfce7; }
+  .system-feedback-banner svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+
+  /* Premium Platforms Global Footer Layout Architecture */
+  .premium-footer { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(185, 28, 28, 0.15); padding: 24px 0; margin-top: 80px; position: relative; }
+  .premium-footer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--premium-grad); }
+  .footer-container { max-width: 1240px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-attribution { font-size: 0.9rem; font-weight: 600; color: #64748b; }
+  .footer-attribution span { color: var(--brand-crimson); font-weight: 800; letter-spacing: -0.02em; }
+  .footer-tagline { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--brand-crimson-dark); background: rgba(185, 28, 28, 0.06); padding: 4px 12px; border-radius: 6px; }
+
+  /* Loading Redirect Curtain */
+  .redirect-curtain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--onyx-deep); z-index: 100000; display: none; flex-direction: column; align-items: center; justify-content: center; color: #ffffff; opacity: 0; transition: opacity 0.4s ease; }
+  .redirect-curtain.active { display: flex; opacity: 1; }
+  .curtain-loader { width: 60px; height: 60px; border: 4px solid rgba(255, 255, 255, 0.1); border-top-color: var(--brand-crimson); border-radius: 50%; animation: inlineSpinner 0.8s linear infinite; margin-bottom: 24px; box-shadow: var(--crimson-glow); }
+  .curtain-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; text-align: center; padding: 0 20px; }
+  .curtain-subtitle { font-size: 0.9rem; color: #94a3b8; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* Toast Notifications System */
+  .toast-container { position: fixed; bottom: 32px; left: 32px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; max-width: 380px; width: calc(100% - 64px); }
+  .toast-card { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid var(--onyx-deep); border-radius: 12px; padding: 16px; box-shadow: 0 10px 25px -5px rgba(15,23,42,0.08); display: flex; gap: 12px; align-items: flex-start; transform: translateX(-120%); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .toast-card.active { transform: translateX(0); opacity: 1; }
+  .toast-card.error { border-left-color: var(--error-red); }
+  .toast-card.success { border-left-color: var(--success-green); }
+  .toast-text { font-size: 0.88rem; color: #334155; line-height: 1.4; font-weight: 600; }
+
+  /* Base Styles for Mobile Elements (Clean default hidden states) */
+  .mobile-bottom-nav { 
+    display: none; 
+    position: fixed; 
+    bottom: 0; left: 0; right: 0; 
+    height: 68px; 
+    background: rgba(255, 255, 255, 0.96); 
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px); 
+    border-top: 1px solid #e2e8f0; 
+    z-index: 9995; 
+    justify-content: space-around; 
+    align-items: center; 
+    padding-bottom: env(safe-area-inset-bottom); 
+    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.03); 
+  }
+  .mobile-nav-item { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    text-decoration: none; 
+    color: #64748b; 
+    font-size: 0.72rem; 
+    font-weight: 700; 
+    width: 20%; 
+    height: 100%; 
+    gap: 2px; 
+  }
+  .mobile-nav-item span { font-size: 1.25rem; }
+  .mobile-nav-item.active { color: var(--brand-crimson); }
+  .mobile-upload-accent .upload-icon-wrapper { background: var(--premium-grad); color: white; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 1.1rem; font-weight: 900; box-shadow: var(--crimson-glow); }
+  .mobile-upload-accent p { margin-top: 1px; color: var(--brand-crimson); }
+  .mobile-avatar-placeholder { width: 24px; height: 24px; border-radius: 50%; background: var(--onyx-deep); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; border: 1.5px solid transparent; }
+
+  /* Account Context Panel Navigation System */
+  .mobile-account-drawer {
+    position: fixed;
+    bottom: -100%;
+    left: 0; right: 0;
+    background: #ffffff;
+    border-radius: 24px 24px 0 0;
+    padding: 24px;
+    z-index: 9998;
+    box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.15);
+    transition: bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .mobile-account-drawer.open {
+    bottom: 68px;
+  }
+  .drawer-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 9997;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .drawer-overlay.active {
+    display: block !important;
+    opacity: 1;
+  }
+
+  /* ── Drawer Meta Header Components ── */
+  .drawer-meta-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .drawer-handle {
+    width: 40px; 
+    height: 4px; 
+    background: #e2e8f0; 
+    border-radius: 2px; 
+    margin: 0 auto;
+    transform: translateX(14px); /* Offsetting structural balance layout offset from button dimensions */
+    cursor: pointer;
+  }
+  .drawer-close-btn {
+    background: #f1f5f9;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .drawer-close-btn:hover {
+    background: #e2e8f0;
+    color: var(--brand-crimson);
+  }
+
+  .drawer-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .drawer-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--premium-grad); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; box-shadow: var(--crimson-glow); }
+  .drawer-user-info h4 { margin: 0; font-size: 1.1rem; color: var(--onyx-deep); font-weight: 800; }
+  .drawer-user-info p { margin: 2px 0 0 0; font-size: 0.85rem; color: #64748b; }
+  .drawer-actions { display: flex; flex-direction: column; gap: 10px; }
+  .drawer-btn {
+    display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px;
+    border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 12px;
+    color: var(--onyx-deep); font-weight: 700; font-size: 0.95rem; text-decoration: none;
+    cursor: pointer; text-align: left; box-sizing: border-box; transition: background 0.15s;
+  }
+  .drawer-btn:hover { background: #f1f5f9; }
+  .drawer-btn-danger { color: var(--error-red); border-color: rgba(239, 64, 64, 0.15); background: #fef2f2; }
+  .drawer-btn-danger:hover { background: #fee2e2; }
+
+  /* ==========================================================================
+     ── BREAKPOINTS & DEVICE ADAPTATION ENGINE ──
+     ========================================================================== */
+
+  /* 📺 4K & Ultra-Wide Environments */
+  @media (min-width: 1920px) {
+    :root { font-size: 18px; }
+    .page-wrapper { max-width: 1600px; }
+    .hero-title { font-size: 4.5rem; }
+  }
+
+  /* 💻 Laptops & Standard Desktops */
+  @media (max-width: 1200px) {
+    .hero-title { font-size: 3rem; }
+  }
+
+  /* 🖳 Tablets & Small Landscape Screens */
+  @media (max-width: 992px) {
+    .nav-links { display: none !important; } 
+    .hero { flex-direction: column-reverse; text-align: center; padding: 40px 0; gap: 30px; }
+    .hero-content { max-width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .hero-actions { justify-content: center; width: 100%; }
+    .stats-inner { flex-wrap: wrap; gap: 24px; }
+    .stat-item { flex: 1 1 calc(50% - 24px); }
+    
+    /* Active bottom viewport navigation mechanics across tablet profiles */
+    .mobile-bottom-nav { display: flex; }
+    body { padding-bottom: 68px; }
+
+    /* Reposition interactive canvas triggers cleanly over bottom nav system blocks */
+    .support-floating-action-button {
+      bottom: 84px;
+      right: 24px;
+    }
+    .drawer-overlay.active { display: block !important; }
+  }
+
+  /* 📱 Large Smartphone Viewports */
+  @media (max-width: 768px) {
+    .navbar { padding: 12px 16px; flex-wrap: wrap; }
+    .nav-search { order: 3; max-width: 100%; flex: none; }
+    .stat-item { flex: 1 1 100%; }
+    .hero-title { font-size: 2.5rem; }
+    #navLinks { display: none !important; }
+  }
+
+  /* 📱 Small Mobile Environments */
+  @media (max-width: 480px) {
+    :root { font-size: 14px; }
+    .page-wrapper { padding: 0 16px; }
+    .navbar { padding: 12px 16px; gap: 8px; }
+    .nav-actions { width: auto; }
+    .nav-actions .btn { padding: 8px 12px !important; font-size: 0.85rem !important; }
+    .hero-title { font-size: 2rem; }
+    .hero-actions { flex-direction: column; gap: 12px; }
+    .hero-actions .btn { width: 100%; text-align: center; padding: 12px 20px !important; }
+    .stats-strip { padding: 20px 16px; }
+    .stat-number { font-size: 2rem; }
+    
+    /* Adjust stack placement rules to secure clean touch target alignment on dense mobile viewports */
+    .support-floating-action-button { 
+      bottom: 84px; 
+      right: 16px; 
+      width: 52px; 
+      height: 52px; 
+    } 
+    .toast-container { left: 16px; bottom: 148px; width: calc(100% - 32px); }
+    .footer-container { flex-direction: column; text-align: center; gap: 12px; }
+    .upload-progress-card { padding: 24px 16px; }
+  }
+
+  /* ── Guardrails: Structural Visibility Resets ── */
+  @media (min-width: 993px) {
+    .mobile-account-drawer, .drawer-overlay { display: none !important; }
+  }
+</style>
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<div id="redirectCurtain" class="redirect-curtain">
+  <div class="curtain-loader"></div>
+  <div class="curtain-title" id="curtainTitle">Syncing Identity Matrix...</div>
+  <div class="curtain-subtitle">AVCEARCH SECURE HANDSHAKE</div>
+</div>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="brand-crest-wrapper">
+      <div class="mini-shield">🦅</div>
+      <span class="logo-text-premium">AV<span>CEARCH</span></span>
+    </div>
+  </a>
+
+  <div class="nav-search" id="navSearch">
+    <div class="search-wrapper">
+      <input type="text" placeholder="Search verified repositories, validation logs..." id="heroSearchInput" class="form-input search-main-input" autocomplete="off" />
+      <div id="searchDropdown" class="search-dropdown-menu"></div>
+    </div>
+  </div>
+
+  <div class="nav-links" id="navLinks">
+    <a href="index.html" class="nav-link active">Dashboard</a>
+    <a href="explore.html" class="nav-link">Explore</a>
+    <a href="ai.html" class="nav-link">🤖 AI Assistant</a>
+    <a href="messages.html" id="messagesNavLink" class="nav-link" style="display: none;">Messages</a>
+    <a href="#" id="signOutBtn" class="nav-link" style="display: none; color: #ef4444;">Sign Out</a>
+  </div>
+ 
+  <div class="nav-actions">
+    <button id="authNavTrigger" class="btn btn-secondary" style="padding: 10px 16px; font-size: 0.9rem;">Sign In</button>
+    <a href="upload.html" id="navUploadBtn" class="nav-upload-btn btn btn-brand-primary" style="padding: 10px 16px; font-size: 0.9rem;">Upload</a>
+    <a href="profile.html" id="navProfileAvatar" class="nav-avatar-link" title="My Profile Portfolio"></a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🛡️ Academically Validated Community Layer</div>
+      <h1 class="hero-title">Where Global Intellect<br/><span class="hero-title-accent">Achieves Validation</span></h1>
+      <p class="hero-subtitle">The open-access verification infrastructure processing mission-critical discoveries directly through real-time distributed database logs.</p>
+      <div class="hero-actions">
+        <a href="upload.html" id="heroUploadBtn" class="btn btn-brand-primary hero-cta" style="padding: 14px 28px;">Upload Research</a>
+        <a href="explore.html" class="btn btn-secondary" style="padding: 14px 28px;">Explore Papers</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-strip">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-number" id="statResearches">...</div><div class="stat-label">Research Papers</div></div>
+      <div class="stat-item"><div class="stat-number" id="statViews">...</div><div class="stat-label">Total Views</div></div>
+      <div class="stat-item"><div class="stat-number" id="statLikes">...</div><div class="stat-label">Total Likes</div></div>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="section-header">
+      <h2 class="section-title"><span class="title-accent">Trending</span> Researches</h2>
+    </div>
+    <div class="research-grid" id="trendingGrid"></div>
+  </section>
+
+  <section class="home-section">
+    <div class="section-header"><h2 class="section-title">Recently <span class="title-accent"> Added</span></h2></div>
+    <div class="research-grid" id="recentGrid"></div>
+  </section>
+</div>
+
+<div id="authModal" class="upload-overlay" style="display: none;">
+  <div id="authProgressCard" class="upload-progress-card" style="position: relative; border: 1px solid rgba(15,23,42,0.08); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+    <button id="closeAuthBtn" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
+   
+    <h2 id="authModalTitle" style="margin: 0 0 6px 0; font-weight:900; color: var(--onyx-deep);">Sign In</h2>
+    <p id="authModalSub" style="font-size: 0.85rem; color: #64748b; margin: 0 0 20px 0;">Secure identity validation portal.</p>
+   
+    <div id="systemFeedback" class="system-feedback-banner"></div>
+
+    <form id="authForm" onsubmit="return false;">
+      <div id="usernameFieldContainer" style="margin-bottom: 12px; display: none;">
+        <label class="form-label">Username Handle</label>
+        <input type="text" id="authUsername" class="form-input" placeholder="e.g. academic_pioneer" />
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="authEmail" class="form-input" placeholder="name@domain.com" required />
+      </div>
+      <div style="margin-bottom: 20px;">
+        <label class="form-label">Password</label>
+        <div class="password-input-wrapper">
+          <input type="password" id="authPassword" class="form-input" placeholder="••••••••" required />
+          <button type="button" id="passwordToggle" class="password-toggle-btn" title="Toggle password visibility">
+            <svg id="eyeIcon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2" fill="none"></path><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" fill="none"></circle></svg>
+          </button>
+        </div>
+      </div>
+      <button type="submit" id="authSubmitBtn" class="upload-submit-btn-brand">
+        <span id="btnText">Verify & Continue</span>
+      </button>
+    </form>
+   
+    <p class="auth-toggle-text" style="text-align: center; font-size: 0.85rem; color: #64748b; margin: 16px 0 0 0;">
+      <span id="togglePromptText">Need system credentials?</span> <span id="authToggleLink" class="auth-toggle-link">Sign Up</span>
+    </p>
+  </div>
+</div>
+
+<footer class="premium-footer">
+  <div class="footer-container">
+    <div class="footer-attribution">
+      © 2026 <span>AVCEARCH</span>. All rights reserved. Made by <span>FTAAVC</span> in 2026©
+    </div>
+    <div class="footer-tagline">
+      Academically Validated Community
+    </div>
+  </div>
+</footer>
+
+<a href="https://t.me/ftaavc" target="_blank" class="support-floating-action-button" id="supportDeskBtn" title="Secure Operations Support Desk">
+  <svg viewBox="0 0 24 24">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" fill="none"></path>
+  </svg>
+</a>
+
+<div class="mobile-bottom-nav">
+  <a href="index.html" class="mobile-nav-item active">
+    <span>🏠</span>
+    <p>Dashboard</p>
+  </a>
+  <a href="explore.html" class="mobile-nav-item">
+    <span>🔍</span>
+    <p>Explore</p>
+  </a>
+  <a href="upload.html" class="mobile-nav-item mobile-upload-accent">
+    <span class="upload-icon-wrapper">＋</span>
+    <p>Upload</p>
+  </a>
+  <a href="ai.html" class="mobile-nav-item">
+    <span>🤖</span>
+    <p>AI Desk</p>
+  </a>
+  <button type="button" class="mobile-nav-item mobile-profile-node" id="mobileAccountTrigger" style="background:none; border:none; padding:0; cursor:pointer; color: inherit;">
+    <div class="mobile-avatar-placeholder">U</div>
+    <p>Account</p>
+  </button>
+</div>
+
+<div class="mobile-account-drawer" id="mobileAccountDrawer">
+  <div class="drawer-meta-header">
+    <div class="drawer-handle"></div>
+    <button type="button" class="drawer-close-btn" id="closeDrawerBtn" title="Close Drawer">✕</button>
+  </div>
+  
+  <div class="drawer-header">
+    <div class="drawer-avatar">U</div>
+    <div class="drawer-user-info">
+      <h4 id="drawerUsername">Operator Node</h4>
+      <p id="drawerEmail">Connected Mesh Session</p>
+    </div>
+  </div>
+  
+  <div class="drawer-actions">
+    <a href="profile.html" class="drawer-btn">
+      <span>👤</span> View Profile Portfolio
+    </a>
+    <button type="button" id="mobileSignOutBtn" class="drawer-btn drawer-btn-danger">
+      <span>🚪</span> Sign Out Session
+    </button>
+  </div>
+</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+</body>
+<script>
+ // ============================================================================
+// 1. Global Toast Notification Module
+// ============================================================================
+const ToastNotification = {
+  show(text, type = "info") {
+    const container = document.getElementById("toastContainer");
+    if (!container) return;
+
+    const toast = document.createElement("div");
+    toast.className = `toast-card ${type}`;
+    toast.innerHTML = `<div class="toast-text">${text}</div>`;
+    container.appendChild(toast);
+
+    // Smooth entry transition
+    setTimeout(() => toast.classList.add("active"), 50);
+
+    // Auto teardown lifecycle
+    setTimeout(() => {
+      toast.classList.remove("active");
+      setTimeout(() => toast.remove(), 400);
+    }, 4000);
+  }
+};
+
+// Global Exposure for legacy script fallbacks
+window.showPremiumToast = ToastNotification.show;
+
+// ============================================================================
+// 2. Authentication & Node Gateway Module
+// ============================================================================
+const AuthUI = {
+  isSignUpMode: false,
+  originalSubmitText: "",
+
+  // Asset SVG definitions to keep DOM injections clean
+  SVGS: {
+    error: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`,
+    success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+    eyeOpen: `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`,
+    eyeClosed: `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`
+  },
+
+  init() {
+    this.cacheDOM();
+    if (!this.form) return; // Prevent breakdown if loaded on pages without an auth modal
+    this.bindEvents();
+  },
+
+  cacheDOM() {
+    this.modal = document.getElementById("authModal");
+    this.form = document.getElementById("authForm");
+    this.title = document.getElementById("authModalTitle");
+    this.subtitle = document.getElementById("authModalSub");
+    this.usernameContainer = document.getElementById("usernameFieldContainer");
+    this.usernameInput = document.getElementById("authUsername");
+    this.toggleLink = document.getElementById("authToggleLink");
+    this.togglePrompt = document.getElementById("togglePromptText");
+    this.submitBtn = document.getElementById("authSubmitBtn");
+    this.btnText = document.getElementById("btnText");
+    this.progressCard = document.getElementById("authProgressCard");
+    this.feedback = document.getElementById("systemFeedback");
+    this.passwordToggle = document.getElementById("passwordToggle");
+    this.passwordInput = document.getElementById("authPassword");
+    this.eyeIcon = document.getElementById("eyeIcon");
+    this.redirectCurtain = document.getElementById("redirectCurtain");
+    this.curtainTitle = document.getElementById("curtainTitle");
+    this.supportBtn = document.getElementById("supportDeskBtn");
+    this.closeBtn = document.getElementById("closeAuthBtn");
+  },
+
+  bindEvents() {
+    this.supportBtn?.addEventListener("click", () => {
+      ToastNotification.show("Connecting to AVCEARCH secure live operations support network...", "info");
+    });
+
+    this.passwordToggle?.addEventListener("click", () => this.togglePasswordVisibility());
+    this.toggleLink?.addEventListener("click", () => this.switchMode());
+    this.form.addEventListener("submit", (e) => this.handleSubmit(e));
+  },
+
+  clearFeedback() {
+    if (!this.feedback) return;
+    this.feedback.className = "system-feedback-banner";
+    this.feedback.innerHTML = "";
+    this.progressCard?.classList.remove("auth-card-error-active", "auth-card-success-active");
+  },
+
+  togglePasswordVisibility() {
+    const isPassword = this.passwordInput.type === "password";
+    this.passwordInput.type = isPassword ? "text" : "password";
+    this.eyeIcon.innerHTML = isPassword ? this.SVGS.eyeClosed : this.SVGS.eyeOpen;
+  },
+
+  switchMode() {
+    this.isSignUpMode = !this.isSignUpMode;
+    this.clearFeedback();
+
+    const config = this.isSignUpMode ? {
+      title: "Create Account",
+      sub: "Join the decentralized verification mesh infrastructure.",
+      display: "block",
+      btnText: "Initialize Node Credentials",
+      prompt: "Existing operator credentials?",
+      linkText: "Sign In"
+    } : {
+      title: "Sign In",
+      sub: "Secure identity validation portal.",
+      display: "none",
+      btnText: "Verify & Continue",
+      prompt: "Need system credentials?",
+      linkText: "Sign Up"
+    };
+
+    this.title.textContent = config.title;
+    this.subtitle.textContent = config.sub;
+    this.usernameContainer.style.display = config.display;
+    
+    if (this.isSignUpMode) {
+      this.usernameInput.setAttribute("required", "required");
+    } else {
+      this.usernameInput.removeAttribute("required");
+    }
+
+    this.btnText.textContent = config.btnText;
+    this.togglePrompt.textContent = config.prompt;
+    this.toggleLink.textContent = config.linkText;
+  },
+
+  renderFeedback(status, message) {
+    const isError = status === "error";
+    this.progressCard?.classList.add(isError ? "auth-card-error-active" : "auth-card-success-active");
+    
+    if (this.feedback) {
+      this.feedback.className = `system-feedback-banner ${status} show`;
+      this.feedback.innerHTML = `
+        ${isError ? this.SVGS.error : this.SVGS.success}
+        <div><strong>${isError ? 'Security Handshake Rejected:' : 'Node Handshake Clear:'}</strong> ${message}</div>
+      `;
+    }
+  },
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    this.clearFeedback();
+
+    const email = document.getElementById("authEmail").value;
+    const password = this.passwordInput.value;
+    const username = this.usernameInput.value;
+
+    if (password.length < 6) {
+      this.renderFeedback("error", "Password requires a minimum of 6 characters.");
+      ToastNotification.show("Authentication Failed: Weak Encryption Standard", "error");
+      return;
+    }
+
+    // Toggle loading UI state
+    this.submitBtn.disabled = true;
+    this.originalSubmitText = this.btnText.textContent;
+    this.btnText.innerHTML = `<div class="inline-loader"></div> Syncing Cluster Logs...`;
+
+    const eventName = this.isSignUpMode ? "firebaseSignUpRequest" : "firebaseSignInRequest";
+    
+    try {
+      // Connect to modular data broker module via custom promises
+      await this.dispatchAuthTransaction(eventName, { email, password, username });
+      
+      // Handle completion phase updates
+      this.renderFeedback("success", "Secure configuration successfully accepted.");
+      ToastNotification.show(this.isSignUpMode ? "Node Credentials Initialized!" : "Handshake Verified Successfully!", "success");
+
+      // Trigger Full Screen Redirect Animation sequence
+      setTimeout(() => {
+        this.closeBtn?.click();
+        if (this.curtainTitle && this.redirectCurtain) {
+          this.curtainTitle.textContent = this.isSignUpMode ? "Provisioning System Profiles..." : "Synchronizing Core Ledgers...";
+          this.redirectCurtain.classList.add("active");
+        }
+        setTimeout(() => window.location.reload(), 2000);
+      }, 1200);
+
+    } catch (error) {
+      // Fallback Interface Recovery Exception Rules
+      this.submitBtn.disabled = false;
+      this.btnText.textContent = this.originalSubmitText;
+      
+      const errMsg = error?.message || "Unknown operational error.";
+      this.renderFeedback("error", errMsg);
+      ToastNotification.show(errMsg, "error");
+    }
+  },
+
+  dispatchAuthTransaction(eventName, payload) {
+    return new Promise((resolve, reject) => {
+      const cleanupHooks = () => {
+        window.removeEventListener(`${eventName}Success`, successHook);
+        window.removeEventListener(`${eventName}Failure`, failureHook);
+      };
+
+      const successHook = (evt) => { cleanupHooks(); resolve(evt.detail); };
+      const failureHook = (evt) => { cleanupHooks(); reject(evt.detail); };
+
+      window.addEventListener(`${eventName}Success`, successHook);
+      window.addEventListener(`${eventName}Failure`, failureHook);
+      
+      window.dispatchEvent(new CustomEvent(eventName, { detail: payload }));
+    });
+  }
+};
+
+// ============================================================================
+// 3. Responsive Navigation Drawer Module
+// ============================================================================
+const DrawerUI = {
+  init() {
+    this.trigger = document.getElementById("mobileAccountTrigger");
+    this.drawer = document.getElementById("mobileAccountDrawer");
+    this.overlay = document.getElementById("drawerOverlay");
+    this.mobileSignOutBtn = document.getElementById("mobileSignOutBtn");
+    this.desktopSignOutBtn = document.getElementById("signOutBtn");
+
+    if (!this.drawer) return;
+    this.bindEvents();
+  },
+
+  bindEvents() {
+    this.trigger?.addEventListener("click", () => {
+      const isOpen = this.drawer.classList.contains("open");
+      this.toggle(!isOpen);
+    });
+
+    this.overlay?.addEventListener("click", () => this.toggle(false));
+    this.drawer.querySelector(".drawer-handle")?.addEventListener("click", () => this.toggle(false));
+    this.mobileSignOutBtn?.addEventListener("click", () => this.handleSignOut());
+  },
+
+  toggle(open) {
+    if (open) {
+      this.overlay?.classList.add("active");
+      this.drawer?.classList.add("open");
+    } else {
+      this.drawer?.classList.remove("open");
+      setTimeout(() => this.overlay?.classList.remove("active"), 200);
+    }
+  },
+
+  handleSignOut() {
+    this.toggle(false);
+    ToastNotification.show("Terminating security cluster handshake connection...", "info");
+
+    if (this.desktopSignOutBtn) {
+      this.desktopSignOutBtn.click();
+    } else {
+      setTimeout(() => window.location.reload(), 1000);
+    }
+  }
+};
+
+// ============================================================================
+// 4. Initialization Execution Context Loop
+// ============================================================================
+document.addEventListener("DOMContentLoaded", () => {
+  AuthUI.init();
+  DrawerUI.init();
+});
+const mobileAccountDrawer = document.getElementById('mobileAccountDrawer');
+const drawerOverlay = document.getElementById('drawerOverlay');
+const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+
+function closeDrawer() {
+  mobileAccountDrawer.classList.remove('open');
+  drawerOverlay.classList.remove('active');
+}
+
+// Close events
+closeDrawerBtn.addEventListener('click', closeDrawer);
+drawerOverlay.addEventListener('click', closeDrawer);
+</script>
+
+<script type="module" src="js/index.js"></script>
+</body>
+</html>

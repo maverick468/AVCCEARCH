@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AVCEARCH</title>
+  <link rel="icon" type="image/png" href="avc.png" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+/* ── Premium Brand Color System Variables ── */
+:root {
+  --brand-crimson: #b91c1c;
+  --brand-crimson-dark: #7f1d1d;
+  --brand-gold: #f59e0b;
+  --onyx-deep: #0f172a;
+  --onyx-surface: #1e293b;
+  --premium-grad: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+  --gold-glow: 0 0 20px rgba(245, 158, 11, 0.15);
+  --crimson-glow: 0 10px 30px rgba(185, 28, 28, 0.15);
+  --error-red: #ef4444;
+  --success-green: #10b981;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  height: -webkit-fill-available; /* Fixed dynamic viewport height calculation bug on iOS Safari */
+  margin: 0;
+  padding: 0;
+  overflow: hidden; 
+  background-color: #f8fafc;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Premium Themed Overrides for Global UI Elements */
+.btn-brand-primary {
+  background: var(--premium-grad);
+  color: #ffffff !important;
+  border: none;
+  font-weight: 700;
+  box-shadow: var(--crimson-glow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-brand-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(185, 28, 28, 0.25);
+}
+
+/* ── Global Header Navigation ── */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  gap: 16px;
+}
+
+.brand-crest-wrapper { display: flex; align-items: center; gap: 10px; }
+.mini-shield {
+  width: 32px; height: 32px; background: var(--premium-grad);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex; align-items: center; justify-content: center; color: #ffffff;
+  font-size: 0.9rem; font-weight: 900; box-shadow: 0 4px 10px rgba(185, 28, 28, 0.3);
+}
+.logo-text-premium { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.03em; color: var(--onyx-deep); text-decoration: none; }
+.logo-text-premium span { color: var(--brand-crimson); }
+.nav-logo { text-decoration: none; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.nav-link {
+  color: #475569;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--brand-crimson);
+}
+
+.nav-avatar-link {
+  width: 38px; height: 38px; border-radius: 50%; background: var(--premium-grad);
+  display: none; align-items: center; justify-content: center; color: white;
+  font-weight: 700; font-size: 0.85rem; text-decoration: none; border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s; cursor: pointer; box-shadow: var(--crimson-glow);
+}
+.nav-avatar-link:hover { transform: scale(1.05); border-color: var(--brand-crimson); }
+.nav-auth-trigger { color: var(--onyx-deep); font-weight: 700; text-decoration: none; cursor: pointer; font-size: 0.9rem; }
+.nav-auth-trigger:hover { color: var(--brand-crimson); }
+
+/* ── Application Main Window Wrapper ── */
+.app-viewport-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: -webkit-fill-available;
+  position: relative;
+}
+
+/* ── AI Workspace Container Layout ── */
+.ai-workspace-hub {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dynamic Scrollable Stream Deck */
+.ai-stream-window {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 4px 160px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar for Streaming UI */
+.ai-stream-window::-webkit-scrollbar { width: 6px; }
+.ai-stream-window::-webkit-scrollbar-track { background: transparent; }
+.ai-stream-window::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+/* Cinematic Welcome Layout */
+.ai-welcome-section {
+  text-align: center;
+  margin: auto;
+  padding: 40px 16px;
+  max-width: 600px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.ai-welcome-section.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  position: absolute;
+  display: none;
+}
+
+.brand-gradient-text {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--onyx-deep), var(--brand-crimson), var(--brand-gold));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+  animation: pulseBrandGrad 8s ease infinite alternate;
+}
+
+@keyframes pulseBrandGrad {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Message Bubble Micro-Animations & Rendering Layouts */
+.ai-msg-row {
+  display: flex;
+  gap: 16px;
+  max-width: 88%;
+  animation: bubbleUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.ai-msg-row.user-row {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+.ai-msg-row.assistant-row {
+  align-self: flex-start;
+  width: 100%;
+  max-width: 100%;
+}
+
+@keyframes bubbleUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-msg-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  user-select: none;
+}
+.ai-msg-row.user-row .ai-msg-avatar {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+.ai-msg-row.assistant-row .ai-msg-avatar {
+  background: var(--premium-grad);
+  color: white;
+  box-shadow: var(--crimson-glow);
+}
+
+.ai-msg-bubble {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #1e293b;
+  padding: 12px 16px;
+  border-radius: 16px;
+  word-break: break-word;
+}
+.ai-msg-row.user-row .ai-msg-bubble {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-top-right-radius: 4px;
+  color: var(--onyx-deep);
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.01);
+}
+.ai-msg-row.assistant-row .ai-msg-bubble {
+  background: transparent;
+  border-radius: 0;
+  padding: 4px 0;
+  width: 100%;
+}
+
+/* Core Markdown Output Layout Fixes within Assistant Bubbles */
+.ai-msg-bubble p { margin: 0 0 12px 0; }
+.ai-msg-bubble p:last-child { margin-bottom: 0; }
+.ai-msg-bubble code {
+  background: #f1f5f9;
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.88rem;
+  color: #dc2626;
+}
+.ai-msg-bubble pre {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 14px;
+  border-radius: 12px;
+  overflow-x: auto;
+  margin: 14px 0;
+}
+.ai-msg-bubble pre code { background: transparent; padding: 0; color: inherit; font-size: 0.85rem; }
+.ai-msg-bubble ul, .ai-msg-bubble ol { margin: 8px 0 14px 20px; padding: 0; }
+.ai-msg-bubble li { margin-bottom: 6px; }
+
+/* Platform High-Fidelity Infrastructure Shimmer */
+.infrastructure-loader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 450px;
+  padding-top: 8px;
+}
+.shimmer-line {
+  height: 12px;
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer linear 1.5s infinite;
+  border-radius: 6px;
+}
+.shimmer-line.short { width: 45%; }
+.shimmer-line.medium { width: 80%; }
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Locked Floating Command Deck ── */
+.ai-fixed-input-deck {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent 0%, #f8fafc 25%);
+  padding: 20px 16px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.ai-input-wrapper-card {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+  padding: 8px 12px;
+  pointer-events: auto;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.ai-input-wrapper-card:focus-within {
+  border-color: var(--brand-crimson);
+  box-shadow: 0 12px 35px -5px rgba(185, 28, 28, 0.12);
+}
+
+.ai-search-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ai-search-bar-container input[type="text"] {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--onyx-deep);
+  background: transparent;
+  padding: 10px 2px;
+  min-width: 0;
+}
+.ai-search-bar-container input::placeholder { color: #94a3b8; }
+
+/* Modern Minimalist "+" Upload Node Button */
+.plus-upload-trigger {
+  width: 40px;
+  height: 40px;
+  background: #f1f5f9;
+  border: none;
+  color: #475569;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.3rem;
+  font-weight: 400;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.plus-upload-trigger:hover {
+  background: rgba(185, 28, 28, 0.08);
+  color: var(--brand-crimson);
+}
+
+.ai-submit-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #e2e8f0;
+  border: none;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background 0.2s, color 0.2s;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+.ai-submit-btn.active {
+  background: var(--premium-grad);
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: var(--crimson-glow);
+}
+.ai-submit-btn.active:hover { transform: scale(1.03); }
+.ai-submit-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.5; }
+
+/* Staged Upload File Notification Badge */
+.staged-file-container {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: rgba(185, 28, 28, 0.06);
+  border: 1px dashed var(--brand-crimson);
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--brand-crimson-dark);
+  width: fit-content;
+  max-width: 100%;
+}
+#stagedFileName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.staged-file-remove {
+  background: none;
+  border: none;
+  color: var(--error-red);
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0 4px;
+  font-size: 0.85rem;
+}
+
+.disclaimer-node {
+  text-align: center; 
+  font-size: 0.7rem; 
+  color: #94a3b8; 
+  margin-top: 8px; 
+  letter-spacing: 0.01em;
+  font-weight: 500;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Custom Toast Notification System styling */
+.rh-alert-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translate(-50%, 140%);
+  background: #ffffff;
+  color: #334155;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid var(--onyx-deep);
+  box-shadow: 0 10px 25px -5px rgba(15,23,42,0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 11000;
+  font-size: 0.88rem;
+  font-weight: 600;
+  width: calc(100% - 32px);
+  max-width: 380px;
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+.rh-alert-toast.show { transform: translate(-50%, 0); opacity: 1; }
+.rh-alert-toast.success { border-left-color: var(--success-green); }
+.rh-alert-toast.error { border-left-color: var(--error-red); }
+
+/* ── Auth Centered Identity Card Overlays ── */
+.upload-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10000;
+  padding: 16px;
+}
+.upload-progress-card {
+  position: relative;
+  max-width: 400px;
+  width: 100%;
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Advanced Form Verification & Haptic Shake Nodes */
+.form-input {
+  width: 100%; padding: 11px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+.form-input:focus {
+  border-color: var(--brand-crimson);
+}
+.form-input.input-success {
+  border-color: var(--success-green) !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
+  background-color: rgba(16, 185, 129, 0.01) !important;
+}
+.form-input.input-error {
+  border-color: var(--error-red) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18) !important;
+  background-color: rgba(239, 68, 68, 0.02) !important;
+  animation: hapticFormShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes hapticFormShake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* ── Mobile Bottom Navigation ── */
+.mobile-bottom-nav { 
+  display: none; 
+  position: fixed; 
+  bottom: 0; left: 0; right: 0; 
+  height: 68px; 
+  background: rgba(255, 255, 255, 0.96); 
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px); 
+  border-top: 1px solid #e2e8f0; 
+  z-index: 9995; 
+  justify-content: space-around; 
+  align-items: center; 
+  padding-bottom: env(safe-area-inset-bottom); 
+  box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.03); 
+}
+.mobile-nav-item { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  text-decoration: none; 
+  color: #64748b; 
+  font-size: 0.72rem; 
+  font-weight: 700; 
+  width: 20%; 
+  height: 100%; 
+  gap: 2px; 
+}
+.mobile-nav-item span { font-size: 1.25rem; }
+.mobile-nav-item.active { color: #b91c1c; }
+.mobile-upload-accent .upload-icon-wrapper { 
+  background: var(--premium-grad); 
+  color: white; width: 32px; height: 32px; display: flex; 
+  align-items: center; justify-content: center; border-radius: 10px; 
+  font-size: 1.1rem; font-weight: 900; box-shadow: 0 10px 30px rgba(185, 28, 28, 0.15); 
+}
+
+/* ── Mobile Account Drawer ── */
+.mobile-account-drawer {
+  position: fixed;
+  bottom: -100%;
+  left: 0; right: 0;
+  background: #ffffff;
+  border-radius: 24px 24px 0 0;
+  padding: 24px;
+  z-index: 9998;
+  box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.15);
+  transition: bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mobile-account-drawer.open { bottom: 68px; }
+
+/* Structural Inner Layout Styles for Drawer Components */
+.drawer-meta-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.drawer-handle {
+  width: 40px;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  margin: 0 auto;
+  transform: translateX(14px);
+}
+.drawer-close-btn {
+  background: #f1f5f9;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+.drawer-close-btn:hover { background: #e2e8f0; }
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.drawer-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--premium-grad);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: 0 6px 16px rgba(185, 28, 28, 0.25);
+}
+.drawer-user-info h4 {
+  margin: 0 0 2px 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+.drawer-user-info p {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.drawer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.drawer-btn {
+  display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px;
+  border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 12px;
+  color: #0f172a; font-weight: 700; font-size: 0.95rem; text-decoration: none;
+  cursor: pointer; text-align: left; box-sizing: border-box;
+}
+.drawer-btn-danger {
+  border-color: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.02);
+  color: #ef4444;
+}
+
+.drawer-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 9997;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.drawer-overlay.active { display: block; opacity: 1; }
+
+/* Micro Base Node Styles for Bottom Nav Trigger */
+.mobile-avatar-placeholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--premium-grad);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.2);
+  border: 1px solid rgba(255,255,255,0.2);
+  margin-bottom: 2px;
+}
+
+/* ── RESPONSIVE VIEWPORT MEDIA QUERIES ── */
+@media (max-width: 992px) {
+  .mobile-bottom-nav { 
+    display: flex; 
+  }
+  body { 
+    padding-bottom: 68px; 
+  }
+  
+  /* FIXED: Switch from absolute layout to fixed anchor to avoid software keyboard issues on phone screens */
+  .ai-fixed-input-deck { 
+    position: fixed;
+    bottom: 68px; 
+    left: 0;
+    right: 0;
+    padding: 12px 16px 16px 16px;
+    background: linear-gradient(to top, #f8fafc 80%, rgba(248, 250, 252, 0) 100%);
+    pointer-events: auto; /* Restores fully interactive layout tap metrics on touch displays */
+  }
+
+  .ai-stream-window { 
+    padding-top: 16px;
+    padding-bottom: 180px; 
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar { 
+    padding: 10px 14px; 
+  }
+  .nav-links { 
+    gap: 14px; 
+  }
+  .nav-link { 
+    font-size: 0.88rem; 
+  }
+  #navUploadBtn { 
+    padding: 8px 14px !important; 
+    font-size: 0.85rem; 
+  }
+  .brand-gradient-text { 
+    font-size: 1.95rem; 
+  }
+  .ai-welcome-section p { 
+    font-size: 0.95rem !important; 
+  }
+  .ai-msg-row { 
+    max-width: 95%; 
+    gap: 12px; 
+  }
+  
+  /* Mobile optimization adjustments for card component scaling */
+  .ai-input-wrapper-card {
+    padding: 6px 10px;
+    border-radius: 16px;
+  }
+  .ai-search-bar-container input[type="text"] {
+    font-size: 0.95rem;
+    padding: 8px 2px;
+  }
+  .plus-upload-trigger, .ai-submit-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 540px) {
+  .navbar { 
+    flex-wrap: wrap; 
+    gap: 8px; 
+    justify-content: space-between; 
+  }
+  .nav-links {
+    order: 3; 
+    width: 100%; 
+    justify-content: space-around;
+    border-top: 1px solid #f1f5f9; 
+    padding-top: 8px; 
+    margin-top: 2px;
+  }
+  .logo-text-premium { 
+    font-size: 1.2rem; 
+  }
+  .mini-shield { 
+    width: 28px; 
+    height: 28px; 
+    font-size: 0.8rem; 
+  }
+  .ai-stream-window { 
+    gap: 18px; 
+    padding-bottom: 165px;
+  }
+  .ai-msg-avatar { 
+    width: 32px; 
+    height: 32px; 
+    font-size: 0.85rem; 
+  }
+  .brand-gradient-text { 
+    font-size: 1.65rem; 
+  }
+  .disclaimer-node { 
+    white-space: normal; 
+    font-size: 0.65rem; 
+    margin-top: 6px;
+  }
+}
+  </style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+
+<div class="app-viewport-wrapper">
+  <nav class="navbar" id="navbar" style="flex-shrink: 0;">
+    <a href="index.html" class="nav-logo">
+      <div class="brand-crest-wrapper">
+        <div class="mini-shield">🦅</div>
+        <span class="logo-text-premium">AV<span>CEARCH</span></span>
+      </div>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="explore.html" class="nav-link">Explore</a>
+      <a href="ai.html" class="nav-link active">🤖 AI Assistant</a>
+      <a href="messages.html" id="messagesNavLink" class="nav-link" style="display: none;">Messages</a>
+      <span id="authNavTrigger" class="nav-auth-trigger" style="display: none;">Sign In</span>
+      <a href="#" id="signOutBtn" class="nav-link" style="display: none; color: #ef4444;">Sign Out</a>
+    </nav>
+    
+    <div style="display: flex; gap: 14px; align-items: center;">
+      <a href="upload.html" id="navUploadBtn" class="nav-upload-btn btn-brand-primary" style="border:none; padding: 10px 20px; border-radius: 8px; text-decoration:none;">Upload</a>
+      <a href="profile.html" id="navProfileAvatar" class="nav-avatar-link" title="My Profile Portfolio"></a>
+    </div>
+  </nav>
+
+  <div class="ai-workspace-hub">
+    
+    <div class="ai-stream-window" id="streamWindow">
+      <div class="ai-welcome-section" id="welcomeSection">
+        <h1 class="brand-gradient-text">Research Co-Pilot</h1>
+        <p style="color: #64748b; font-size: 1.1rem; font-weight: 500; line-height: 1.5;">
+          How can I accelerate your synthesis, citation validation, or text analysis processing today?
+        </p>
+      </div>
+    </div>
+
+    <div class="ai-fixed-input-deck">
+      <div class="ai-input-wrapper-card">
+        <div class="staged-file-container" id="stagedFileContainer">
+          <span id="stagedFileName">document.pdf</span>
+          <button class="staged-file-remove" id="stagedFileRemoveBtn" type="button">✕</button>
+        </div>
+
+        <form id="aiConsoleForm" class="ai-search-bar-container">
+          <label class="plus-upload-trigger" title="Attach validation documents (+)">
+            +
+            <input type="file" id="aiDocAttachment" style="display: none;" accept=".pdf,.txt,.doc,.docx,.json,.csv,.log" />
+          </label>
+          
+          <input 
+            type="text" 
+            id="aiConsoleInput" 
+            placeholder="Ask Co-Pilot to synthesize or analyze a document..." 
+            autocomplete="off" 
+            required 
+          />
+          <button type="submit" id="aiSubmitBtn" class="ai-submit-btn">
+            <svg viewBox="0 0 24 24">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+      </div>
+      <div class="disclaimer-node">
+        AVCEARCH node engine may parse records inaccurately. Cross-verify critical attributions.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="rhCustomToast" class="rh-alert-toast">
+  <span id="rhToastMsg">Notification Message</span>
+</div>
+
+<div id="authModal" class="upload-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); align-items: center; justify-content: center; z-index: 10000;">
+  <div class="upload-progress-card" style="position: relative; max-width: 400px; width: 100%; background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+    <button id="closeAuthBtn" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 1.2rem; cursor: pointer;">✕</button>
+    <h2 id="authModalTitle" style="margin-bottom: 6px; font-weight:800; text-align: left; color: var(--onyx-deep);">Sign In</h2>
+    <p id="authModalSub" style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px; text-align: left;">Secure identity validation portal.</p>
+    <form id="authForm">
+      <div id="usernameFieldContainer" style="margin-bottom: 12px; display: none;">
+        <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--onyx-deep);">Username Handle</label>
+        <input type="text" id="authUsername" class="form-input" placeholder="e.g. sarah_chen" style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px;" />
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--onyx-deep);">Email Address</label>
+        <input type="email" id="authEmail" class="form-input" style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px;" required />
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--onyx-deep);">Password</label>
+        <input type="password" id="authPassword" class="form-input" style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px;" required />
+      </div>
+      <button type="submit" id="authSubmitBtn" class="btn-brand-primary" style="width:100%; padding:12px; border-radius:8px; font-weight: 700; cursor: pointer;">Verify & Continue</button>
+      <div id="authToggleContainer" style="font-size: 0.85rem; margin-top:14px; color: #64748b; text-align:center;">Need system credentials? <span id="authToggleLink" style="color:var(--brand-crimson); cursor:pointer; font-weight:600;">Sign Up</span></div>
+    </form>
+  </div>
+</div>
+<div class="mobile-bottom-nav">
+  <a href="index.html" class="mobile-nav-item">
+    <span>🏠</span>
+    <p>Dashboard</p>
+  </a>
+  <a href="explore.html" class="mobile-nav-item active">
+    <span>🔍</span>
+    <p>Explore</p>
+  </a>
+  <a href="upload.html" class="mobile-nav-item mobile-upload-accent">
+    <span class="upload-icon-wrapper">＋</span>
+    <p>Upload</p>
+  </a>
+  <a href="ai.html" class="mobile-nav-item">
+    <span>🤖</span>
+    <p>AI Desk</p>
+  </a>
+  <button type="button" class="mobile-nav-item mobile-profile-node" id="mobileAccountTrigger" style="background:none; border:none; padding:0; cursor:pointer; color: inherit;">
+    <div class="mobile-avatar-placeholder" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(185, 28, 28, 0.2); border: 1px solid rgba(255,255,255,0.2); margin-bottom: 2px;">U</div>
+    <p>Account</p>
+  </button>
+</div>
+
+<div class="mobile-account-drawer" id="mobileAccountDrawer">
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+    <div class="drawer-handle" style="width: 40px; height: 4px; background: #e2e8f0; border-radius: 2px; margin: 0 auto; transform: translateX(14px);"></div>
+    <button id="closeDrawerBtn" style="background: #f1f5f9; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 0.85rem; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; transition: background 0.2s;">✕</button>
+  </div>
+
+  <div class="drawer-header" style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+    <div class="drawer-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; box-shadow: 0 6px 16px rgba(185, 28, 28, 0.25);">U</div>
+    <div class="drawer-user-info">
+      <h4 id="drawerUsername" style="margin: 0 0 2px 0; font-size: 1.05rem; font-weight: 800; color: #0f172a;">Operator Node</h4>
+      <p id="drawerEmail" style="margin: 0; font-size: 0.82rem; font-weight: 500; color: #64748b;">Connected Mesh Session</p>
+    </div>
+  </div>
+
+  <div class="drawer-actions" style="display: flex; flex-direction: column; gap: 10px;">
+    <a href="profile.html" class="drawer-btn">
+      <span>👤</span> View Profile Portfolio
+    </a>
+  </div>
+</div>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+</body>
+<script type="module">
+  import { auth } from './js/firebase.js'; 
+  import { 
+    onAuthStateChanged, 
+    signOut, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword, 
+    updateProfile 
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { Groq } from 'https://esm.sh/groq-sdk';
+
+  // ── AUTHENTICATION NODES REGISTRY ─────────────────────────
+  const authElements = {
+    trigger: document.getElementById("authNavTrigger"),
+    signOut: document.getElementById("signOutBtn"),
+    messages: document.getElementById("messagesNavLink"),
+    uploadBtn: document.getElementById("navUploadBtn"),
+    avatar: document.getElementById("navProfileAvatar"),
+    modal: document.getElementById("authModal"),
+    closeModal: document.getElementById("closeAuthBtn"),
+    form: document.getElementById("authForm"),
+    usernameInput: document.getElementById("authUsername"),
+    usernameContainer: document.getElementById("usernameFieldContainer"),
+    modalTitle: document.getElementById("authModalTitle"),
+    modalSub: document.getElementById("authModalSub"),
+    submitBtn: document.getElementById("authSubmitBtn"),
+    toggleContainer: document.getElementById("authToggleContainer")
+  };
+
+  const emailInput = document.getElementById("authEmail");
+  const passwordInput = document.getElementById("authPassword");
+
+  let currentUser = null;
+  let isSignUpMode = false;
+  let attachedFileInstance = null;
+
+  function displayToast(message, type = "info") {
+    const toast = document.getElementById("rhCustomToast");
+    const msgSpan = document.getElementById("rhToastMsg");
+    if (msgSpan) msgSpan.textContent = message;
+    
+    toast.className = `rh-alert-toast ${type}`;
+    toast.classList.add("show");
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 4000);
+  }
+  window.showPremiumToast = displayToast;
+
+  // Visual Form Feedback State Helper Function
+  function setElementFeedbackState(el, isValid) {
+    if (!el) return;
+    el.classList.remove("input-error", "input-success");
+    if (isValid) {
+      el.classList.add("input-success");
+    } else {
+      void el.offsetWidth; // Force CSS structural recalculation layer to restart shake animation loops
+      el.classList.add("input-error");
+    }
+  }
+
+  // Clear visual warning highlights once the operator updates the inputs
+  [emailInput, passwordInput, authElements.usernameInput].forEach(field => {
+    field?.addEventListener("input", () => {
+      field.classList.remove("input-error", "input-success");
+    });
+  });
+
+  // ── ON AUTH STATE CHANGED ──────────────────────────────────
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    if (user) {
+      if(authElements.trigger) authElements.trigger.style.display = "none";
+      if(authElements.signOut) authElements.signOut.style.display = "block";
+      if(authElements.messages) authElements.messages.style.display = "block";
+      if(authElements.avatar) {
+        authElements.avatar.style.display = "flex";
+        const userInitials = user.displayName || user.email.split("@")[0];
+        authElements.avatar.textContent = userInitials.substring(0, 2).toUpperCase();
+      }
+    } else {
+      if(authElements.trigger) authElements.trigger.style.display = "block";
+      if(authElements.signOut) authElements.signOut.style.display = "none";
+      if(authElements.messages) authElements.messages.style.display = "none";
+      if(authElements.avatar) {
+        authElements.avatar.style.display = "none";
+      }
+    }
+  });
+
+  authElements.uploadBtn?.addEventListener("click", (e) => {
+    if (!currentUser) {
+      e.preventDefault();
+      displayToast("Identity verification required to push changes.", "error");
+      setAuthMode(false);
+      if (authElements.modal) authElements.modal.style.display = "flex";
+    }
+  });
+
+  authElements.trigger?.addEventListener("click", () => {
+    setAuthMode(false);
+    if (authElements.modal) authElements.modal.style.display = "flex";
+  });
+  
+  authElements.closeModal?.addEventListener("click", () => {
+    if (authElements.modal) authElements.modal.style.display = "none";
+    // Reset any hanging feedback styles upon escape
+    [emailInput, passwordInput, authElements.usernameInput].forEach(f => f?.classList.remove("input-error", "input-success"));
+  });
+
+  authElements.signOut?.addEventListener("click", (e) => {
+    e.preventDefault();
+    signOut(auth).then(() => {
+      displayToast("Operator Cluster Handshake Terminated.", "info");
+      window.location.reload();
+    });
+  });
+
+  authElements.form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = emailInput?.value.trim();
+    const password = passwordInput?.value;
+    const username = authElements.usernameInput?.value.trim();
+
+    let clientValidationPassed = true;
+
+    // Direct Pre-verification checking sequences before remote communication triggers
+    if (!email || !email.includes("@")) {
+      setElementFeedbackState(emailInput, false);
+      clientValidationPassed = false;
+    }
+    if (!password || password.length < 6) {
+      setElementFeedbackState(passwordInput, false);
+      clientValidationPassed = false;
+    }
+    if (isSignUpMode && !username) {
+      setElementFeedbackState(authElements.usernameInput, false);
+      clientValidationPassed = false;
+    }
+
+    if (!clientValidationPassed) {
+      displayToast("Verification configuration schema mapping error.", "error");
+      return;
+    }
+
+    if (isSignUpMode) {
+      window.dispatchEvent(new CustomEvent("firebaseSignUpRequest", { detail: { email, password, username } }));
+    } else {
+      window.dispatchEvent(new CustomEvent("firebaseSignInRequest", { detail: { email, password } }));
+    }
+  });
+
+  window.addEventListener("firebaseSignInRequest", async (e) => {
+    const { email, password } = e.detail;
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      window.dispatchEvent(new CustomEvent("firebaseSignInRequestSuccess", { detail: userCredential.user }));
+    } catch (error) {
+      window.dispatchEvent(new CustomEvent("firebaseSignInRequestFailure", { detail: error }));
+    }
+  });
+
+  window.addEventListener("firebaseSignUpRequest", async (e) => {
+    const { email, password, username } = e.detail;
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      if (username) {
+        await updateProfile(userCredential.user, { displayName: username });
+      }
+      window.dispatchEvent(new CustomEvent("firebaseSignUpRequestSuccess", { detail: userCredential.user }));
+    } catch (error) {
+      window.dispatchEvent(new CustomEvent("firebaseSignUpRequestFailure", { detail: error }));
+    }
+  });
+
+  window.addEventListener("firebaseSignInRequestSuccess", (e) => {
+    setElementFeedbackState(emailInput, true);
+    setElementFeedbackState(passwordInput, true);
+    displayToast("Handshake Verified Successfully!", "success");
+    setTimeout(() => {
+      if (authElements.modal) authElements.modal.style.display = "none";
+      authElements.form?.reset();
+      [emailInput, passwordInput].forEach(f => f?.classList.remove("input-success"));
+    }, 600);
+  });
+
+  window.addEventListener("firebaseSignInRequestFailure", (e) => {
+    setElementFeedbackState(emailInput, false);
+    setElementFeedbackState(passwordInput, false);
+    displayToast("Infrastructure Refusal: Identity verification mismatch.", "error");
+  });
+
+  window.addEventListener("firebaseSignUpRequestSuccess", (e) => {
+    setElementFeedbackState(emailInput, true);
+    setElementFeedbackState(passwordInput, true);
+    if(authElements.usernameInput) setElementFeedbackState(authElements.usernameInput, true);
+    
+    displayToast("Node Credentials Initialized!", "success");
+    setTimeout(() => {
+      if (authElements.modal) authElements.modal.style.display = "none";
+      authElements.form?.reset();
+      [emailInput, passwordInput, authElements.usernameInput].forEach(f => f?.classList.remove("input-success"));
+    }, 600);
+  });
+
+  window.addEventListener("firebaseSignUpRequestFailure", (e) => {
+    setElementFeedbackState(emailInput, false);
+    setElementFeedbackState(passwordInput, false);
+    displayToast("Infrastructure Refusal: " + e.detail.message, "error");
+  });
+
+  function setAuthMode(toSignUp) {
+    isSignUpMode = toSignUp;
+    // Clear styles when switching between views
+    [emailInput, passwordInput, authElements.usernameInput].forEach(f => f?.classList.remove("input-error", "input-success"));
+
+    if (isSignUpMode) {
+      if (authElements.modalTitle) authElements.modalTitle.textContent = "Create Account";
+      if (authElements.modalSub) authElements.modalSub.textContent = "Join the decentralized verification mesh infrastructure.";
+      if (authElements.submitBtn) authElements.submitBtn.textContent = "Initialize Node Credentials";
+      if (authElements.usernameContainer) authElements.usernameContainer.style.display = "block";
+      if (authElements.usernameInput) authElements.usernameInput.setAttribute("required", "");
+    } else {
+      if (authElements.modalTitle) authElements.modalTitle.textContent = "Sign In";
+      if (authElements.modalSub) authElements.modalSub.textContent = "Secure identity validation portal.";
+      if (authElements.submitBtn) authElements.submitBtn.textContent = "Verify & Continue";
+      if (authElements.usernameContainer) authElements.usernameContainer.style.display = "none";
+      if (authElements.usernameInput) authElements.usernameInput.removeAttribute("required");
+    }
+    
+    if (authElements.toggleContainer) {
+      authElements.toggleContainer.innerHTML = isSignUpMode 
+        ? 'Existing operator credentials? <span id="authToggleLink" style="color:var(--brand-crimson); cursor:pointer; font-weight:600;">Sign In</span>' 
+        : 'Need system credentials? <span id="authToggleLink" style="color:var(--brand-crimson); cursor:pointer; font-weight:600;">Sign Up</span>';
+      
+      document.getElementById("authToggleLink")?.addEventListener("click", () => setAuthMode(!isSignUpMode));
+    }
+  }
+
+  // ── ATTACHMENT CONTROLLER INTERACTION ──────────────────────
+  const fileInput = document.getElementById("aiDocAttachment");
+  const stagedContainer = document.getElementById("stagedFileContainer");
+  const stagedNameSpan = document.getElementById("stagedFileName");
+  const stagedRemoveBtn = document.getElementById("stagedFileRemoveBtn");
+
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      attachedFileInstance = file;
+      stagedNameSpan.textContent = `⚙️ ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+      stagedContainer.style.display = "flex";
+      submitBtn.classList.add("active");
+      displayToast(`File [${file.name}] registered to workspace memory pipeline.`, "success");
+    }
+  });
+
+  stagedRemoveBtn.addEventListener("click", () => {
+    attachedFileInstance = null;
+    fileInput.value = "";
+    stagedContainer.style.display = "none";
+    displayToast("Context flushed from pipeline cache.", "info");
+    if (input.value.trim().length === 0) {
+      submitBtn.classList.remove("active");
+    }
+  });
+
+  // ── CORE GROQ ASSISTANT PIPELINE ───────────────────────────
+  
+  const GROQ_API_KEY = "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";
+  const groq = new Groq({ apiKey: GROQ_API_KEY, dangerouslyAllowBrowser: true });
+
+  const form = document.getElementById("aiConsoleForm");
+  const input = document.getElementById("aiConsoleInput");
+  const submitBtn = document.getElementById("aiSubmitBtn");
+  const welcome = document.getElementById("welcomeSection");
+  const stream = document.getElementById("streamWindow");
+
+  let chatMessagesHistory = [
+    { role: "system", content: "You are an intelligent, supportive, and grounded academic peer assistant specialized in analyzing research papers." }
+  ];
+
+  input.addEventListener("input", () => {
+    if (input.value.trim().length > 0 || attachedFileInstance) {
+      submitBtn.classList.add("active");
+    } else {
+      submitBtn.classList.remove("active");
+    }
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    let promptText = input.value.trim();
+    if (!promptText && !attachedFileInstance) return;
+
+    if (welcome) {
+      welcome.classList.add("hidden");
+    }
+
+    let userDisplayMessage = promptText;
+    if (attachedFileInstance) {
+      userDisplayMessage = promptText 
+        ? `[Attached: ${attachedFileInstance.name}]\n\n${promptText}`
+        : `[Attached: ${attachedFileInstance.name}]\n\nPlease summarize or analyze this document.`;
+      
+      promptText = `${userDisplayMessage} (Context note: User appended a manuscript file content block named ${attachedFileInstance.name})`;
+    }
+
+    appendMessageRow(userDisplayMessage, "user");
+    chatMessagesHistory.push({ role: "user", content: promptText });
+    
+    if (chatMessagesHistory.length > 7) {
+      const systemPrompt = chatMessagesHistory[0];
+      const recentContext = chatMessagesHistory.slice(-6);
+      chatMessagesHistory = [systemPrompt, ...recentContext];
+    }
+
+    input.value = "";
+    attachedFileInstance = null;
+    fileInput.value = "";
+    stagedContainer.style.display = "none";
+    submitBtn.classList.remove("active");
+    
+    const currentAssistantResponseId = appendLoadingPlaceholder();
+
+    try {
+      if (!GROQ_API_KEY) throw new Error("Groq API key missing.");
+const chatCompletion = await groq.chat.completions.create({
+        "messages": chatMessagesHistory,
+        "model": "openai/gpt-oss-120b", // Includes the required provider prefix
+        "temperature": 0.7,
+        "max_completion_tokens": 1024,
+        "stream": true
+      });
+
+      const targetBubble = document.getElementById(currentAssistantResponseId).querySelector(".ai-msg-bubble");
+      targetBubble.innerHTML = "";
+      let accumulatedResponseText = "";
+
+      for await (const chunk of chatCompletion) {
+        const nextContentToken = chunk.choices[0]?.delta?.content || '';
+        accumulatedResponseText += nextContentToken;
+        targetBubble.innerHTML = parseMarkdownHtml(accumulatedResponseText);
+        stream.scrollTop = stream.scrollHeight;
+      }
+
+      chatMessagesHistory.push({ role: "assistant", content: accumulatedResponseText });
+    } catch (err) {
+      console.error(err);
+      const targetBubble = document.getElementById(currentAssistantResponseId)?.querySelector(".ai-msg-bubble");
+      if (targetBubble) {
+        targetBubble.innerHTML = `<span style="color: #ef4444; font-weight: 600;">⚠️ Error: ${err.message}</span>`;
+      }
+    }
+  });
+
+  function appendMessageRow(text, sender) {
+    const row = document.createElement("div");
+    row.className = `ai-msg-row ${sender}-row`;
+    const avatar = sender === "user" ? "👤" : "🦅";
+    const bodyContent = sender === "user" ? escapeHtml(text).replace(/\n/g, "<br>") : parseMarkdownHtml(text);
+    
+    row.innerHTML = `<div class="ai-msg-avatar">${avatar}</div><div class="ai-msg-bubble">${bodyContent}</div>`;
+    stream.appendChild(row);
+    stream.scrollTop = stream.scrollHeight;
+  }
+
+  function appendLoadingPlaceholder() {
+    const uniqueId = "assistant-response-" + Date.now();
+    const row = document.createElement("div");
+    row.className = "ai-msg-row assistant-row";
+    row.id = uniqueId;
+    row.innerHTML = `
+      <div class="ai-msg-avatar">🦅</div>
+      <div class="ai-msg-bubble">
+        <div class="infrastructure-loader">
+          <div class="shimmer-line medium"></div>
+          <div class="shimmer-line"></div>
+          <div class="shimmer-line short"></div>
+        </div>
+      </div>`;
+    stream.appendChild(row);
+    stream.scrollTop = stream.scrollHeight;
+    return uniqueId;
+  }
+
+  function escapeHtml(string) {
+    return String(string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function parseMarkdownHtml(rawText) {
+    let cleanText = escapeHtml(rawText);
+    
+    cleanText = cleanText.replace(/```([\s\S]*?)```/g, function(match, codeSegment) {
+      return '<pre><code>' + codeSegment.trim() + '</code></pre>';
+    });
+
+    cleanText = cleanText.replace(/`([^`]+)`/g, '<code>$1</code>');
+    cleanText = cleanText.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
+    cleanText = cleanText.replace(/^\s*\*\s+(.*?)$/gm, '<li>$1</li>');
+    cleanText = cleanText.replace(/(<li>.*?<\/li>)+/g, '<ul>$&</ul>');
+
+    if (!cleanText.includes('<ul>') && !cleanText.includes('<pre>')) {
+      cleanText = cleanText.split(/\n{2,}/g).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+    }
+
+    return cleanText;
+  }
+</script>
+<script>
+ // Updated Toggle Logic for Drawer
+  const mobileTrigger = document.getElementById('mobileAccountTrigger');
+  const mobileDrawer = document.getElementById('mobileAccountDrawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const closeDrawerBtn = document.getElementById('closeDrawerBtn'); // Ensure this ID matches your HTML
+
+  function toggleDrawer() {
+    mobileDrawer.classList.toggle('open');
+    drawerOverlay.classList.toggle('active');
+  }
+
+  // Bind Open Trigger
+  mobileTrigger?.addEventListener('click', toggleDrawer);
+
+  // Bind Close triggers
+  drawerOverlay?.addEventListener('click', toggleDrawer);
+  closeDrawerBtn?.addEventListener('click', toggleDrawer);
+</script>
+</body>
+</html>

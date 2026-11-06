@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AVCEARCH</title>
+  <link rel="icon" type="image/png" href="avc.png" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    :root {
+      --sky-primary: #3b82f6;
+      --sky-grad: linear-gradient(135deg, #3b82f6, #06b6d4);
+      --text-muted: #64748b;
+      --text-dark: #0f172a;
+      --cloud-bg: #f8fafc;
+      --cloud-border: #e2e8f0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--cloud-bg);
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      border-bottom: 1px solid #e2e8f0;
+      background: white;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-dark);
+    }
+    .nav-logo span span { color: var(--sky-primary); }
+
+    .auth-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .auth-card {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--cloud-border);
+      max-width: 420px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .auth-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin: 0 0 6px 0;
+    }
+
+    .auth-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #334155;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      background: #ffffff;
+      transition: border-color 0.15s ease;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--sky-primary);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--sky-primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s ease;
+    }
+    .submit-btn:hover {
+      background: #2563eb;
+    }
+
+    .toggle-container {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    .toggle-link {
+      color: #2563eb;
+      font-weight: 700;
+      margin-left: 4px;
+      text-decoration: none;
+    }
+    .toggle-link:hover {
+      text-decoration: underline;
+    }
+
+    .divider {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .divider hr {
+      flex: 1;
+      border: none;
+      border-top: 1px solid #e2e8f0;
+    }
+    .divider span {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .google-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px;
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s ease;
+    }
+    .google-btn:hover {
+      background: #f8fafc;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">🔬</div>
+    <span class="logo-text">Research<span>Hub</span></span>
+  </a>
+</nav>
+
+<main class="auth-container">
+  <div class="auth-card">
+    <h1 id="authTitle" class="auth-title">Sign In</h1>
+    <p id="authSubtitle" class="auth-subtitle">Access your personal dashboard profile account.</p>
+    
+    <form id="standaloneAuthForm">
+      <div id="usernameFieldContainer" class="form-group" style="display: none;">
+        <label class="form-label" for="authUsername">Username Handle</label>
+        <input type="text" id="authUsername" class="form-input" placeholder="e.g. sarah_chen" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="authEmail">Email Address</label>
+        <input type="email" id="authEmail" class="form-input" placeholder="you@university.edu" required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="authPassword">Password</label>
+        <input type="password" id="authPassword" class="form-input" placeholder="••••••••" required />
+      </div>
+
+      <button type="submit" id="authSubmitBtn" class="submit-btn">Continue</button>
+
+      <div class="toggle-container">
+        <span id="authToggleText" style="color: var(--text-muted);">Don't have an account?</span>
+        <a href="#" id="authToggleLink" class="toggle-link">Create one</a>
+      </div>
+
+      <div class="divider">
+        <hr />
+        <span>Or</span>
+        <hr />
+      </div>
+
+      <button type="button" id="googleAuthBtn" class="google-btn">
+        🌐 Continue with Google
+      </button>
+    </form>
+  </div>
+</main>
+
+<script type="module" src="js/signin.js"></script>
+</body>
+</html>

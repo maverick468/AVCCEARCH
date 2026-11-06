@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AVCEARCH</title>
+  <link rel="icon" type="image/png" href="avc.png" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+:root {
+  --brand-crimson: #b91c1c;
+  --brand-crimson-dark: #7f1d1d;
+  --brand-gold: #f59e0b;
+  --onyx-deep: #0f172a;
+  --premium-grad: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+  --crimson-glow: 0 10px 30px rgba(185, 28, 28, 0.15);
+}
+
+body {
+  background-color: #f1f5f9;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(185, 28, 28, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
+  background-attachment: fixed;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.page-wrapper {
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 80px 20px 40px;
+  position: relative;
+}
+
+/* ── Premium Glassmorphic Back Button ── */
+.back-nav-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 14px;
+  color: #475569;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.back-nav-trigger:hover {
+  color: #ffffff;
+  background: var(--brand-crimson);
+  border-color: var(--brand-crimson);
+  box-shadow: 0 8px 20px rgba(185, 28, 28, 0.25);
+  transform: translateY(-2px);
+}
+
+.back-nav-trigger:active {
+  transform: translateY(0);
+}
+
+.back-nav-trigger svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.back-nav-trigger:hover svg {
+  transform: translateX(-3px);
+}
+
+/* ── Profile Layout Transitions ── */
+.insta-profile-header { 
+  display: flex; 
+  align-items: center; 
+  gap: 60px; 
+  padding: 20px 20px 40px; 
+  border-bottom: 1px solid #e2e8f0; 
+  max-width: 800px; 
+  margin: 0 auto 40px;
+  animation: floatInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.profile-avatar-container { 
+  position: relative; 
+  width: 130px; 
+  height: 130px; 
+  border-radius: 50%; 
+  background: var(--premium-grad); 
+  border: 3px solid transparent; 
+  overflow: hidden; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  box-shadow: var(--crimson-glow);
+  flex-shrink: 0;
+}
+
+.profile-info-column { flex: 1; }
+.profile-username-row { display: flex; align-items: center; gap: 20px; margin-bottom: 16px; }
+
+.profile-username {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--onyx-deep);
+  margin: 0;
+}
+
+.profile-stats-row { display: flex; gap: 32px; margin-bottom: 16px; color: #475569; }
+.profile-stats-row strong { color: var(--onyx-deep); }
+
+/* ── Blurry Frosted Glass Premium Centerpiece Card ── */
+.coming-soon-wrapper {
+  max-width: 800px;
+  margin: 40px auto;
+  text-align: center;
+  padding: 65px 40px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 28px;
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05);
+  animation: floatInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(185, 28, 28, 0.06);
+  border: 1px dashed var(--brand-crimson);
+  color: var(--brand-crimson);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 100px;
+  margin-bottom: 24px;
+}
+
+/* ── Shiny Animated Header Output Text ── */
+.coming-soon-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  margin: 0 0 16px 0;
+  background: linear-gradient(
+    to right, 
+    #0f172a 20%, 
+    #b91c1c 40%, 
+    #f59e0b 60%, 
+    #0f172a 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShine 4.5s linear infinite;
+}
+
+.coming-soon-subtitle {
+  color: #475569;
+  font-size: 1.05rem;
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+/* ── System Core Animations Keyframes ── */
+@keyframes textShine {
+  to { background-position: 200% center; }
+}
+
+@keyframes floatInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── RESPONSIVE MEDIA BREAKPOINTS ── */
+
+@media (max-width: 768px) {
+  .page-wrapper {
+    padding: 90px 16px 40px; /* Provides separation room below absolute back-button asset */
+  }
+
+  .insta-profile-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+    padding: 10px 10px 32px;
+  }
+
+  .profile-username-row {
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .profile-stats-row {
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .coming-soon-wrapper {
+    padding: 48px 24px;
+    margin: 24px auto;
+    border-radius: 20px;
+  }
+
+  .coming-soon-title {
+    font-size: 1.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-nav-trigger {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    top: 16px;
+    left: 16px;
+  }
+
+  .profile-avatar-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-username {
+    font-size: 1.3rem;
+  }
+
+  .profile-stats-row {
+    font-size: 0.9rem;
+    gap: 16px;
+  }
+
+  .coming-soon-title {
+    font-size: 1.6rem;
+  }
+
+  .coming-soon-subtitle {
+    font-size: 0.95rem;
+  }
+}
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  
+  <!-- Back Navigation Action Trigger -->
+  <div onclick="history.back()" class="back-nav-trigger" title="Go back to the previous workspace node">
+    <svg viewBox="0 0 24 24">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Back
+  </div>
+
+  <!-- Profile Structural Header Mockup -->
+  <div class="insta-profile-header">
+    <div class="profile-avatar-container" id="avatarFrame">
+      <div id="avatarInitials" style="font-size: 2.5rem; font-weight: 900; color: #ffffff; user-select: none;">🦅</div>
+    </div>
+    
+    <div class="profile-info-column">
+      <div class="profile-username-row">
+        <h2 class="profile-username" id="uUsername">@researcher</h2>
+      </div>
+      <div class="profile-stats-row">
+        <span><strong id="countPapers">0</strong> publications</span>
+        <span><strong id="countFollowers">0</strong> followers</span>
+        <span><strong id="countFollowing">0</strong> following</span>
+      </div>
+      <div id="uName" style="font-weight: 700; color: var(--onyx-deep); margin-bottom: 4px;">Research Space Node</div>
+      <div id="uBio" style="font-size:0.9rem; color: #64748b; line-height: 1.5;">Decentralized profile verification mesh.</div>
+    </div>
+  </div>
+
+  <!-- Central Coming Soon Intercept Core (Blurry & Shiny UI) -->
+  <div class="coming-soon-wrapper">
+    <div class="coming-soon-badge">System Core Offline</div>
+    <h3 class="coming-soon-title">Profile Personalization Coming Soon</h3>
+    <p class="coming-soon-subtitle">
+      We are actively establishing connection layers to link Firebase dynamic storage clusters. Soon, you will be able to customize profile attributes, avatars, and monitor customized research streams smoothly here.
+    </p>
+  </div>
+</div>
+
+</body>
+</html>

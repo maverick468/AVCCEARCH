@@ -1,0 +1,97 @@
+/* explore.css */
+
+.explore-header {
+  background: linear-gradient(180deg, var(--bg-1) 0%, transparent 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 0 32px;
+  position: relative;
+  z-index: 1;
+}
+.explore-header-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+.explore-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+.explore-title span { color: var(--accent); }
+.explore-subtitle { color: var(--text-3); font-size: 0.875rem; }
+
+/* Filters */
+.filters-bar {
+  background: var(--bg-0);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 90;
+  padding: 12px 0;
+}
+.filters-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  overflow: hidden;
+}
+.sort-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  color: var(--text-3);
+}
+.sort-wrap select {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  color: var(--text-1);
+  cursor: pointer;
+}
+.sort-wrap select:focus { outline: none; border-color: var(--accent-2); }
+
+.categories-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+}
+.categories-scroll::-webkit-scrollbar { display: none; }
+
+/* Grid */
+.explore-grid-wrap {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 32px 60px 60px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Load more */
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 32px 0 0;
+}
+
+@media (max-width: 1024px) {
+  .explore-header-inner { padding: 0 32px; }
+  .filters-inner { padding: 0 32px; }
+  .explore-grid-wrap { padding: 24px 32px 48px; }
+}
+@media (max-width: 640px) {
+  .filters-inner { flex-direction: column; align-items: flex-start; gap: 10px; padding: 0 16px; }
+  .explore-header-inner { padding: 0 16px; }
+  .explore-grid-wrap { padding: 16px 16px 40px; }
+}

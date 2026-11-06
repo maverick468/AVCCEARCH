@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AVCEARCH — Stream Asset Core</title>
+  <link rel="icon" type="image/png" href="avc.png" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    /* ── Premium Brand Color System Variables ── */
+    :root {
+      --brand-crimson: #b91c1c;
+      --brand-crimson-dark: #7f1d1d;
+      --brand-gold: #f59e0b;
+      --onyx-deep: #0f172a;
+      --onyx-surface: #1e293b;
+      --premium-grad: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+      --gold-glow: 0 0 20px rgba(245, 158, 11, 0.15);
+      --crimson-glow: 0 10px 30px rgba(185, 28, 28, 0.15);
+      --error-red: #ef4444;
+      --success-green: #10b981;
+      --text-muted: #64748b;
+    }
+
+    /* Premium Themed Overrides for Global UI Elements */
+    .btn-brand-primary {
+      background: var(--premium-grad);
+      color: #ffffff !important;
+      border: none;
+      font-weight: 700;
+      box-shadow: var(--crimson-glow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-brand-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(185, 28, 28, 0.25);
+    }
+
+    /* ── Back Navigation Control Asset ── */
+    .btn-back-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: var(--onyx-deep);
+      padding: 8px 16px;
+      border-radius: 99px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-bottom: 16px;
+    }
+    .btn-back-nav:hover {
+      border-color: var(--brand-crimson);
+      color: var(--brand-crimson);
+      transform: translateX(-4px);
+      box-shadow: 0 4px 12px rgba(185, 28, 28, 0.08);
+    }
+    .btn-back-nav svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s ease;
+    }
+
+    /* ── Logo Custom Graphic Breakdown ── */
+    .brand-crest-wrapper { display: flex; align-items: center; gap: 10px; }
+    .mini-shield {
+      width: 32px; height: 32px; background: var(--premium-grad);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex; align-items: center; justify-content: center; color: #ffffff;
+      font-size: 0.9rem; font-weight: 900; box-shadow: 0 4px 10px rgba(185, 28, 28, 0.3);
+    }
+    .logo-text-premium { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.03em; color: var(--onyx-deep); }
+    .logo-text-premium span { color: var(--brand-crimson); }
+
+    .nav-avatar-link {
+      width: 38px; height: 38px; border-radius: 50%; background: var(--premium-grad);
+      display: none; align-items: center; justify-content: center; color: white;
+      font-weight: 700; font-size: 0.85rem; text-decoration: none; border: 2px solid transparent;
+      transition: transform 0.2s, border-color 0.2s; cursor: pointer; box-shadow: var(--crimson-glow);
+    }
+    .nav-avatar-link:hover { transform: scale(1.05); border-color: var(--brand-crimson); }
+
+    /* ── Upload Area System Overhauls ── */
+    .upload-container-card {
+      background: #ffffff;
+      border: 1px solid rgba(15,23,42,0.08);
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .form-label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.85rem; color: var(--onyx-deep); text-transform: uppercase; letter-spacing: 0.03em; }
+    .form-input, .form-select, .form-textarea { 
+      width: 100%; padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 10px; 
+      box-sizing: border-box; background: #ffffff; margin-bottom: 4px; font-size: 0.95rem;
+      color: var(--onyx-deep); transition: all 0.2s ease;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none; border-color: var(--brand-crimson); box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.1);
+    }
+
+    /* Cinematic Drag & Drop Dropzone area */
+    .file-dropzone-wrapper {
+      border: 2px dashed #cbd5e1; border-radius: 14px; padding: 32px 20px;
+      text-align: center; cursor: pointer; background: #f8fafc; transition: all 0.2s ease;
+      position: relative; overflow: hidden;
+    }
+    .file-dropzone-wrapper:hover { border-color: var(--brand-crimson); background: rgba(185, 28, 28, 0.02); }
+    .file-dropzone-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+    
+    .dropzone-icon { font-size: 2rem; margin-bottom: 8px; display: inline-block; transition: transform 0.2s ease; }
+    .file-dropzone-wrapper:hover .dropzone-icon { transform: translateY(-3px); }
+    .file-selected-badge { display: none; background: rgba(16, 185, 129, 0.1); color: var(--success-green); padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; margin-top: 10px; }
+
+    .upload-submit-btn-brand {
+      width: 100%; padding: 14px; background: var(--premium-grad); color: white; border: none;
+      border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: var(--crimson-glow);
+      transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .upload-submit-btn-brand:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(185, 28, 28, 0.25); }
+    .upload-submit-btn-brand:disabled { background: #64748b; cursor: not-allowed; box-shadow: none; opacity: 0.7; transform: none; }
+
+    /* ── Live Premium Chat Concierge Widget ── */
+    .support-floating-action-button {
+      position: fixed; bottom: 32px; right: 32px; width: 60px; height: 60px; background: var(--onyx-deep);
+      color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      text-decoration: none; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); z-index: 9999; border: 1px solid rgba(255,255,255,0.15);
+    }
+    .support-floating-action-button:hover { 
+      transform: translateY(-4px) scale(1.05); background: var(--brand-crimson); 
+      box-shadow: var(--crimson-glow); border-color: rgba(255,255,255,0.25);
+    }
+    .support-floating-action-button svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .support-floating-action-button::after {
+      content: ''; position: absolute; top: -2px; right: -2px; width: 12px; height: 12px;
+      background: #22c55e; border-radius: 50%; border: 2px solid var(--onyx-deep);
+    }
+    .support-floating-action-button:hover::after { border-color: var(--brand-crimson); }
+
+    /* ── Animations and Status Modules ── */
+    @keyframes modalShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    @keyframes inlineSpinner { to { transform: rotate(360deg); } }
+    @keyframes pulseGlowRing { 0% { box-shadow: 0 0 0 0 rgba(185, 28, 28, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(185, 28, 28, 0); } 100% { box-shadow: 0 0 0 0 rgba(185, 28, 28, 0); } }
+    @keyframes borderFlashRed {
+      0%, 100% { border-color: rgba(15,23,42,0.08); } 50% { border-color: var(--error-red); box-shadow: 0 0 25px rgba(239, 68, 68, 0.2); }
+    }
+    
+    .upload-card-error-active { animation: modalShake 0.4s cubic-bezier(.36,.07,.19,.97) both, borderFlashRed 1.2s ease-in-out infinite; border: 1px solid var(--error-red) !important; }
+    .inline-loader { width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #ffffff; border-radius: 50%; animation: inlineSpinner 0.6s linear infinite; }
+
+    /* ── High Intensity Direct Feedback Banners ── */
+    .system-feedback-banner {
+      padding: 14px; border-radius: 12px; font-size: 0.88rem; font-weight: 600; margin-bottom: 20px;
+      display: none; align-items: flex-start; gap: 10px; line-height: 1.5; transform: translateY(-4px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0;
+    }
+    .system-feedback-banner.show { display: flex; opacity: 1; transform: translateY(0); }
+    .system-feedback-banner.error { background: #fef2f2; color: #991b1b; border: 1px solid #fee2e2; }
+    .system-feedback-banner svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+
+    /* Modern Overlay Progress Box */
+    .upload-overlay-blur {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000;
+    }
+    .premium-progress-card {
+      background: #ffffff; padding: 40px; border-radius: 24px; width: 340px; text-align: center;
+      border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .radial-pulse-anchor {
+      width: 80px; height: 80px; background: var(--premium-grad); border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; margin: 0 auto 24px; color: white; font-size: 1.5rem;
+      animation: pulseGlowRing 2s infinite;
+    }
+
+    /* ── Premium Platform Footer ── */
+    .premium-footer {
+      background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(185, 28, 28, 0.15); padding: 24px 0; margin-top: 80px; position: relative;
+    }
+    .premium-footer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--premium-grad); }
+    .footer-container { max-width: 1240px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .footer-attribution { font-size: 0.9rem; font-weight: 600; color: #64748b; }
+    .footer-attribution span { color: var(--brand-crimson); font-weight: 800; letter-spacing: -0.02em; }
+    .footer-tagline { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--brand-crimson-dark); background: rgba(185, 28, 28, 0.06); padding: 4px 12px; border-radius: 6px; }
+
+    /* Stylish Text Toast Notifications System */
+    .toast-container { position: fixed; bottom: 32px; left: 32px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; max-width: 380px; width: 100%; }
+    .toast-card {
+      background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid var(--onyx-deep); border-radius: 12px; padding: 16px;
+      box-shadow: 0 10px 25px -5px rgba(15,23,42,0.08); display: flex; gap: 12px; align-items: flex-start; transform: translateX(-120%); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast-card.active { transform: translateX(0); opacity: 1; }
+    .toast-card.info { border-left-color: var(--brand-gold); }
+    .toast-card.error { border-left-color: var(--error-red); }
+    .toast-text { font-size: 0.88rem; color: #334155; line-height: 1.4; font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="brand-crest-wrapper">
+      <div class="mini-shield">🦅</div>
+      <span class="logo-text-premium">AV<span>CEARCH</span></span>
+    </div>
+  </a>
+
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="explore.html" class="nav-link">Explore</a>
+    <a href="ai.html" class="nav-link">🤖 AI Assistant</a>
+  </nav>
+  
+  <div style="display: flex; gap: 14px; align-items: center;">
+    <a href="upload.html" id="navUploadBtn" class="nav-upload-btn btn-brand-primary active" style="border:none;">Upload</a>
+    <a href="profile.html" id="navProfileAvatar" class="nav-avatar-link" title="My Profile Portfolio"></a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <div style="margin-bottom: 32px; margin-top: 40px;">
+    <button class="btn-back-nav" onclick="history.back();" title="Return to Core Tracking Layer">
+      <svg viewBox="0 0 24 24">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to Platform
+    </button>
+
+    <h1 style="font-size: 2.25rem; font-weight: 900; margin-bottom: 8px; color: var(--onyx-deep); letter-spacing: -0.02em;">Publish Asset Node</h1>
+    <p style="color: var(--text-muted); font-size: 1.05rem;">Compile your academic configurations directly onto the public core tracking distributed layers.</p>
+  </div>
+  
+  <div class="upload-container-card" id="uploadContainerCard">
+    <div id="systemFeedback" class="system-feedback-banner"></div>
+
+    <form id="uploadForm">
+      <div style="margin-bottom: 18px;">
+        <label class="form-label">Document Title</label>
+        <input type="text" id="titleInput" class="form-input" placeholder="e.g. Analysis of Neural Lattice Filters" required />
+      </div>
+      
+      <div style="margin-bottom: 18px;">
+        <label class="form-label">Primary Author</label>
+        <input type="text" id="authorInput" class="form-input" placeholder="e.g. Sarah Chen PhD" required />
+      </div>
+      
+      <div style="margin-bottom: 18px;">
+        <label class="form-label">Academic Category</label>
+        <select id="categorySelect" class="form-select" required>
+          <option value="AI & ML">AI & ML</option>
+          <option value="Data Science">Data Science</option>
+          <option value="Biology">Biology</option>
+          <option value="Computer Science">Computer Science</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      
+      <div style="margin-bottom: 18px;">
+        <label class="form-label">Abstract Overview</label>
+        <textarea id="descInput" class="form-textarea" rows="4" placeholder="Summarize your validation metrics and academic findings..."></textarea>
+      </div>
+      
+      <div style="margin-bottom: 28px;">
+        <label class="form-label">Target Payload Data (PDF, DOCX, PPTX)</label>
+        <div class="file-dropzone-wrapper">
+          <input type="file" id="researchFileInput" accept=".pdf,.docx,.pptx" required />
+          <div class="dropzone-icon">🚀</div>
+          <div style="font-weight: 700; color: var(--onyx-deep); font-size: 0.95rem; margin-bottom: 4px;">Drag data package here or browse</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Maximum bandwidth structural allocation: 100MB</div>
+          <div id="fileSelectedBadge" class="file-selected-badge"></div>
+        </div>
+      </div>
+      
+      <button type="submit" id="uploadSubmitBtn" class="upload-submit-btn-brand">
+        <span id="btnText">Stream Asset to Cloud Directory</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<div id="uploadOverlay" class="upload-overlay-blur">
+  <div class="premium-progress-card">
+    <div class="radial-pulse-anchor">🛰️</div>
+    <h3 id="upcTitle" style="margin-bottom: 6px; font-weight: 900; color: var(--onyx-deep); font-size: 1.2rem;">Streaming Core Blocks...</h3>
+    <p id="upcStatusText" style="font-size: 0.82rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">Synchronizing Uplink</p>
+    <p id="upcPercent" style="font-size: 2.5rem; font-weight: 900; color: var(--brand-crimson); letter-spacing: -0.04em; line-height: 1;">0%</p>
+  </div>
+</div>
+
+<footer class="premium-footer">
+  <div class="footer-container">
+    <div class="footer-attribution">
+      © 2026 <span>AVCEARCH</span>. All rights reserved. Made by <span>FTAAVC</span> in 2026©
+    </div>
+    <div class="footer-tagline">
+      Academically Validated Community
+    </div>
+  </div>
+</footer>
+
+<a href="https://t.me/ftaavc" 
+   target="_blank" 
+   rel="noopener noreferrer" 
+   class="support-floating-action-button" 
+   id="supportDeskBtn" 
+   title="Secure Operations Support Desk">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+  </svg>
+</a>
+
+<script>
+  // High-Fidelity Alert Notification Engine
+  function showPremiumToast(text, type = "info") {
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.className = `toast-card ${type}`;
+    toast.innerHTML = `<div class="toast-text">${text}</div>`;
+    container.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add("active"), 50);
+    setTimeout(() => {
+      toast.classList.remove("active");
+      setTimeout(() => toast.remove(), 400);
+    }, 4000);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.getElementById("researchFileInput");
+    const fileBadge = document.getElementById("fileSelectedBadge");
+    const supportDeskBtn = document.getElementById("supportDeskBtn");
+
+    // Live Intercept File Attachment State Changes
+    fileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        fileBadge.textContent = `📦 SELECTED: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+        fileBadge.style.display = "inline-block";
+        showPremiumToast("Data package verified. Ready for transmission initialization.", "info");
+      } else {
+        fileBadge.style.display = "none";
+      }
+    });
+
+    supportDeskBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      
+    });
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    // ... your other code ...
+
+    supportDeskBtn.addEventListener("click", (e) => {
+      // 1. Prevent default behavior if you want to control the opening manually
+      e.preventDefault();
+      
+      // 2. Show the toast
+      showPremiumToast("Connecting to AVCEARCH secure live operations support network...", "info");
+      
+      // 3. Open the link after a short delay (so the toast is visible first)
+      setTimeout(() => {
+        window.open("https://t.me/ftaavc", "_blank", "noopener,noreferrer");
+      }, 1000); // 1-second delay so the user sees the toast
+    });
+  });
+</script>
+
+<script type="module" src="js/upload.js"></script>
+</body>
+</html>

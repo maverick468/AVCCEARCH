@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVSEARCH | Genesis</title>
+  <style>
+    :root {
+      --brand-crimson: #b91c1c;
+      --brand-crimson-dark: #7f1d1d;
+      --brand-gold: #f59e0b;
+      --onyx-deep: #05070c;
+      --premium-grad: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+      --tesla-neon-glow: 0 0 40px rgba(185, 28, 28, 0.4);
+    }
+
+    body {
+      background-color: var(--onyx-deep);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* ── Cinematic DaVinci x Musk Dimension Curtain ── */
+    .welcome-curtain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--onyx-deep);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+      opacity: 1;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .welcome-curtain.dismissed {
+      transform: scale(1.05);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ── The Sacred Geometry Engine ── */
+    .engine-core-wrapper {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .orbit-ring-outer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 1px dashed rgba(245, 158, 11, 0.25);
+      border-radius: 50%;
+      animation: spinClockwise 20s linear infinite;
+    }
+
+    .orbit-ring-inner {
+      position: absolute;
+      width: 85%;
+      height: 85%;
+      border: 2px solid transparent;
+      border-top: 2px solid var(--brand-crimson);
+      border-bottom: 2px solid var(--brand-gold);
+      border-radius: 50%;
+      box-shadow: var(--tesla-neon-glow);
+      animation: spinCounterClockwise 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    /* ── Premium Circled Logo Asset Node ── */
+    .brand-logo-node {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: #000000;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 2;
+      box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05);
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    .brand-logo-node img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Keeps logo filling the circle perfectly */
+    }
+
+    /* ── Metallic Shifting Hyper-Typography ── */
+    .welcome-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin: 0;
+      background: linear-gradient(to right, #ffffff 20%, var(--brand-crimson) 45%, var(--brand-gold) 55%, #ffffff 80%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textShine 4s linear infinite;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .system-subtitle {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.8rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      margin-top: 16px;
+      font-weight: 600;
+      animation: deepPulse 2s ease-in-out infinite;
+    }
+
+    /* Added Branding */
+    .done-by {
+      color: var(--brand-crimson);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      margin-top: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    /* ── Core Mechanical Animation Routines ── */
+    @keyframes textShine { to { background-position: -200% center; } }
+    @keyframes spinClockwise { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes spinCounterClockwise { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+    @keyframes pulseGlow {
+      0%, 100% { border-color: rgba(255, 255, 255, 0.1); transform: scale(1); }
+      50% { border-color: var(--brand-crimson); transform: scale(1.02); }
+    }
+    @keyframes deepPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    @media (max-width: 768px) {
+      .welcome-title { font-size: 1.6rem; letter-spacing: 0.05em; }
+      .engine-core-wrapper { width: 130px; height: 130px; }
+      .brand-logo-node { width: 80px; height: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="welcome-curtain" id="welcomeCurtain">
+    <div class="engine-core-wrapper">
+      <div class="orbit-ring-outer"></div>
+      <div class="orbit-ring-inner"></div>
+      <div class="brand-logo-node">
+        <img src="avc.png" alt="AVSEARCH Core">
+      </div>
+    </div>
+
+    <h1 class="welcome-title">Welcome to AVCEARCH</h1>
+    <div class="system-subtitle">Initializing Neural Engine</div>
+    <div class="done-by">DONE BY FTA AVC CAMPUS</div>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const curtain = document.getElementById('welcomeCurtain');
+      setTimeout(() => {
+        curtain.classList.add('dismissed');
+        setTimeout(() => {
+          window.location.replace("https://classy-malabi-f3405c.netlify.app/");
+        }, 800); 
+      }, 3200);
+    });
+  </script>
+</body>
+</html>

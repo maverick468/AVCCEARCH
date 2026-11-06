@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>AVCEARCH</title>
+  <link rel="icon" type="image/png" href="avc.png" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    /* ── Premium Brand Color System Variables ── */
+    :root {
+  --brand-crimson: #b91c1c;
+  --brand-crimson-dark: #7f1d1d;
+  --brand-gold: #f59e0b;
+  --onyx-deep: #0f172a;
+  --onyx-surface: #1e293b;
+  --premium-grad: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+  --gold-glow: 0 0 20px rgba(245, 158, 11, 0.15);
+  --crimson-glow: 0 10px 30px rgba(185, 28, 28, 0.15);
+  --error-red: #ef4444;
+  --success-green: #10b981;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background-color: #f8fafc;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Premium Themed Overrides for Global UI Elements */
+.btn-brand-primary {
+  background: var(--premium-grad);
+  color: #ffffff !important;
+  border: none;
+  font-weight: 700;
+  box-shadow: var(--crimson-glow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-brand-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(185, 28, 28, 0.25);
+}
+
+/* ── Global Header Navigation ── */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  gap: 16px;
+}
+
+.brand-crest-wrapper { display: flex; align-items: center; gap: 10px; }
+.mini-shield {
+  width: 32px; height: 32px; background: var(--premium-grad);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex; align-items: center; justify-content: center; color: #ffffff;
+  font-size: 0.9rem; font-weight: 900; box-shadow: 0 4px 10px rgba(185, 28, 28, 0.3);
+}
+.logo-text-premium { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.03em; color: var(--onyx-deep); text-decoration: none; }
+.logo-text-premium span { color: var(--brand-crimson); }
+.nav-logo { text-decoration: none; }
+
+.nav-search {
+  flex: 1;
+  max-width: 480px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.nav-link {
+  color: #475569;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--brand-crimson);
+}
+
+.nav-avatar-link {
+  width: 38px; height: 38px; border-radius: 50%; background: var(--premium-grad);
+  display: none; align-items: center; justify-content: center; color: white;
+  font-weight: 700; font-size: 0.85rem; text-decoration: none; border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s; cursor: pointer; box-shadow: var(--crimson-glow);
+}
+.nav-avatar-link:hover { transform: scale(1.05); border-color: var(--brand-crimson); }
+
+/* ── Main Layout Wrapper ── */
+.page-wrapper {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Category Navigation Bar ── */
+.category-bar { 
+  display: flex; 
+  gap: 12px; 
+  margin-bottom: 36px; 
+  overflow-x: auto; 
+  padding-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+.category-bar::-webkit-scrollbar { height: 6px; }
+.category-bar::-webkit-scrollbar-track { background: transparent; }
+.category-bar::-webkit-scrollbar-thumb { background: rgba(15, 23, 42, 0.1); border-radius: 99px; }
+
+.cat-pill { 
+  background: #ffffff; 
+  border: 1px solid #e2e8f0; 
+  color: var(--onyx-deep); 
+  padding: 12px 24px; 
+  min-height: 44px; 
+  border-radius: 99px; 
+  cursor: pointer; 
+  font-size: 0.88rem; 
+  font-weight: 700; 
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); 
+  white-space: nowrap; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.cat-pill:hover { border-color: var(--brand-crimson); color: var(--brand-crimson); transform: translateY(-1px); }
+.cat-pill.active { background: var(--premium-grad); color: white; border-color: transparent; box-shadow: var(--crimson-glow); }
+
+/* Elastic Grid Infrastructure */
+.research-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* Predictive Search Interface */
+.search-wrapper { position: relative; width: 100%; }
+.search-main-input { position: relative; background: #ffffff; z-index: 2; width: 100%; min-height: 44px; }
+.search-main-input:focus { border-color: var(--brand-crimson); box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.1); }
+
+.search-dropdown-menu {
+  position: absolute; top: 100%; left: 0; right: 0; background: white;
+  border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  max-height: 320px; overflow-y: auto; z-index: 999; display: none; margin-top: 8px; padding: 6px 0;
+}
+.dropdown-item {
+  padding: 12px 16px; cursor: pointer; font-size: 0.9rem; color: #1e293b;
+  display: flex; flex-direction: column; transition: background 0.1s;
+  border-bottom: 1px solid #f1f5f9; text-decoration: none;
+}
+.dropdown-item:last-child { border-bottom: none; }
+.dropdown-item:hover { background: #f8fafc; }
+
+/* ── Live Premium Chat Concierge Widget ── */
+.support-floating-action-button {
+  position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; background: var(--onyx-deep);
+  color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  text-decoration: none; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); z-index: 9999; border: 1px solid rgba(255,255,255,0.15);
+}
+.support-floating-action-button:hover { 
+  transform: translateY(-4px) scale(1.05); background: var(--brand-crimson); 
+  box-shadow: var(--crimson-glow); border-color: rgba(255,255,255,0.25);
+}
+.support-floating-action-button svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.support-floating-action-button::after {
+  content: ''; position: absolute; top: 0; right: 0; width: 12px; height: 12px;
+  background: #22c55e; border-radius: 50%; border: 2px solid var(--onyx-deep);
+}
+.support-floating-action-button:hover::after { border-color: var(--brand-crimson); }
+
+.upload-submit-btn-brand {
+  width: 100%; min-height: 44px; background: var(--premium-grad); color: white; border: none;
+  border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; box-shadow: var(--crimson-glow);
+  transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.upload-submit-btn-brand:disabled { background: #64748b; cursor: not-allowed; box-shadow: none; opacity: 0.7; }
+.auth-toggle-link { color: var(--brand-crimson); font-weight: 700; text-decoration: none; cursor: pointer; }
+
+/* ── High-Fidelity Interactive Password Fields ── */
+.password-input-wrapper { position: relative; width: 100%; }
+.password-input-wrapper .form-input { padding-right: 48px; width: 100%; box-sizing: border-box; min-height: 44px; }
+.password-toggle-btn {
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: #94a3b8; cursor: pointer; width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center; z-index: 10; transition: color 0.2s;
+}
+.password-toggle-btn:hover { color: var(--brand-crimson); }
+.password-toggle-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+/* ── Cinematic Verification Form Status Animations ── */
+@keyframes modalShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+@keyframes inlineSpinner { to { transform: rotate(360deg); } }
+@keyframes scaleSuccessIn { 0% { transform: scale(0.92); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes borderFlashRed {
+  0%, 100% { border-color: rgba(15,23,42,0.08); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+  50% { border-color: var(--error-red); box-shadow: 0 0 25px rgba(239, 68, 68, 0.35); }
+}
+@keyframes borderFlashGreen {
+  0%, 100% { border-color: rgba(15,23,42,0.08); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+  50% { border-color: var(--success-green); box-shadow: 0 0 30px rgba(16, 185, 129, 0.45); }
+}
+
+.auth-card-error-active { animation: modalShake 0.4s cubic-bezier(.36,.07,.19,.97) both, borderFlashRed 1.2s ease-in-out infinite; border: 1px solid var(--error-red) !important; }
+.auth-card-success-active { animation: scaleSuccessIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards, borderFlashGreen 1.2s ease-in-out infinite; border: 1px solid var(--success-green) !important; }
+.inline-loader { width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #ffffff; border-radius: 50%; animation: inlineSpinner 0.6s linear infinite; }
+
+/* ── High Intensity Direct Feedback Banners ── */
+.system-feedback-banner {
+  padding: 14px; border-radius: 12px; font-size: 0.88rem; font-weight: 600; margin-bottom: 20px;
+  display: none; align-items: flex-start; gap: 10px; line-height: 1.5; transform: translateY(-4px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0;
+}
+.system-feedback-banner.show { display: flex; opacity: 1; transform: translateY(0); }
+.system-feedback-banner.error { background: #fef2f2; color: #991b1b; border: 1px solid #fee2e2; }
+.system-feedback-banner.success { background: #f0fdf4; color: #166534; border: 1px solid #dcfce7; }
+.system-feedback-banner svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+
+/* Auth Centered Identity Card Overlays */
+.upload-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10000;
+  padding: 16px;
+}
+.upload-progress-card {
+  position: relative;
+  max-width: 400px;
+  width: 100%;
+  background: #fff;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.form-input {
+  width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; outline: none; min-height: 44px;
+}
+
+/* ── Premium Platform Footer ── */
+.premium-footer {
+  background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(185, 28, 28, 0.15); padding: 24px 0; margin-top: 80px; position: relative;
+}
+.premium-footer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--premium-grad); }
+.footer-container { max-width: 1240px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer-attribution { font-size: 0.9rem; font-weight: 600; color: #64748b; }
+.footer-attribution span { color: var(--brand-crimson); font-weight: 800; letter-spacing: -0.02em; }
+.footer-tagline { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--brand-crimson-dark); background: rgba(185, 28, 28, 0.06); padding: 4px 12px; border-radius: 6px; }
+
+/* ── Full-Screen Redirect Loading Overlay ── */
+.redirect-curtain {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--onyx-deep); z-index: 100000;
+  display: none; flex-direction: column; align-items: center; justify-content: center; color: #ffffff; opacity: 0; transition: opacity 0.4s ease;
+  padding: 20px; text-align: center;
+}
+.redirect-curtain.active { display: flex; opacity: 1; }
+.curtain-loader {
+  width: 60px; height: 60px; border: 4px solid rgba(255, 255, 255, 0.1); border-top-color: var(--brand-crimson);
+  border-radius: 50%; animation: inlineSpinner 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite; margin-bottom: 24px; box-shadow: var(--crimson-glow);
+}
+.curtain-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+.curtain-subtitle { font-size: 0.9rem; color: #94a3b8; letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* ── Stylish Text Toast Notifications System ── */
+.toast-container { position: fixed; bottom: 24px; left: 24px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; max-width: 380px; width: calc(100% - 48px); }
+.toast-card {
+  background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid var(--onyx-deep); border-radius: 12px; padding: 16px;
+  box-shadow: 0 10px 25px -5px rgba(15,23,42,0.08); display: flex; gap: 12px; align-items: flex-start; transform: translateX(-120%); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.toast-card.active { transform: translateX(0); opacity: 1; }
+.toast-card.success { border-left-color: var(--success-green); }
+.toast-card.error { border-left-color: var(--error-red); }
+.toast-text { font-size: 0.88rem; color: #334155; line-height: 1.4; font-weight: 600; }
+
+/* ── RESPONSIVE MEDIA BREAKPOINTS ── */
+@media (max-width: 960px) {
+  .navbar { padding: 12px 16px; }
+  .nav-search { max-width: 320px; }
+  .nav-links { gap: 14px; }
+  .page-wrapper { padding: 0 16px; }
+}
+
+@media (max-width: 768px) {
+  .navbar { flex-wrap: wrap; gap: 12px; }
+  .nav-search { order: 3; max-width: 100%; width: 100%; margin-top: 2px; }
+  .category-bar { margin-bottom: 24px; }
+  .premium-footer { margin-top: 60px; padding: 20px 0; }
+  .footer-container { flex-direction: column; text-align: center; gap: 12px; }
+}
+
+@media (max-width: 540px) {
+  .navbar { justify-content: space-between; }
+  .nav-links {
+    order: 4; width: 100%; justify-content: space-around;
+    border-top: 1px solid #f1f5f9; padding-top: 10px; margin-top: 4px;
+  }
+  .logo-text-premium { font-size: 1.25rem; }
+  .mini-shield { width: 28px; height: 28px; font-size: 0.8rem; }
+  #authNavTrigger { padding: 8px 12px !important; font-size: 0.85rem; }
+  #navUploadBtn { padding: 8px 14px !important; font-size: 0.85rem; }
+  .page-wrapper h1 { font-size: 1.75rem !important; }
+  .page-wrapper p { font-size: 0.95rem !important; }
+  .research-grid { grid-template-columns: 1fr; gap: 16px; }
+  .toast-container { left: 16px; bottom: 16px; width: calc(100% - 32px); }
+  
+  /* FIXED: Shift the chat button explicitly upwards out of the visual profile link zone */
+  .support-floating-action-button { bottom: 84px; right: 16px; width: 50px; height: 50px; }
+}
+
+/* ── Mobile Bottom Navigation ── */
+.mobile-bottom-nav { 
+  display: none; 
+  position: fixed; 
+  bottom: 0; left: 0; right: 0; 
+  height: 68px; 
+  background: rgba(255, 255, 255, 0.96); 
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px); 
+  border-top: 1px solid #e2e8f0; 
+  z-index: 9995; 
+  justify-content: space-around; 
+  align-items: center; 
+  padding-bottom: env(safe-area-inset-bottom); 
+  box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.03); 
+}
+.mobile-nav-item { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  text-decoration: none; 
+  color: #64748b; 
+  font-size: 0.72rem; 
+  font-weight: 700; 
+  width: 20%; 
+  height: 100%; 
+  gap: 2px; 
+}
+.mobile-nav-item span { font-size: 1.25rem; }
+.mobile-nav-item.active { color: var(--brand-crimson); }
+.mobile-upload-accent .upload-icon-wrapper { 
+  background: var(--premium-grad); 
+  color: white; width: 32px; height: 32px; display: flex; 
+  align-items: center; justify-content: center; border-radius: 10px; 
+  font-size: 1.1rem; font-weight: 900; box-shadow: 0 10px 30px rgba(185, 28, 28, 0.15); 
+}
+
+/* ── Mobile Account Drawer ── */
+.mobile-account-drawer {
+  position: fixed;
+  bottom: -100%;
+  left: 0; right: 0;
+  background: #ffffff;
+  border-radius: 24px 24px 0 0;
+  padding: 24px;
+  z-index: 10001; /* Layered ABOVE the Chat Widget (9999) to prevent overlapping layout blocks */
+  box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.15);
+  transition: bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mobile-account-drawer.open,
+.mobile-account-drawer.active { bottom: 0; } 
+
+.drawer-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 10000; /* Placed immediately under the drawer to screen off interactions on content beneath */
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.drawer-overlay.active { display: block; opacity: 1; }
+
+.drawer-handle {
+  width: 40px;
+  height: 5px;
+  background-color: #cbd5e1;
+  border-radius: 3px;
+  margin: 0 auto 20px auto;
+}
+
+/* ── Drawer Header Area & Back Button Placement ── */
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.drawer-profile-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.drawer-avatar {
+  width: 50px;
+  height: 50px;
+  background: var(--premium-grad);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.drawer-user-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+  color: var(--onyx-deep);
+  letter-spacing: 0.5px;
+}
+
+.drawer-user-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* ── Premium Back/Close Action Trigger ── */
+.drawer-close-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: none;
+  color: var(--onyx-deep);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.drawer-close-trigger:hover,
+.drawer-close-trigger:focus {
+  background-color: rgba(185, 28, 28, 0.1);
+  color: var(--brand-crimson);
+  outline: none;
+}
+
+/* ── Action Buttons Layout ── */
+.drawer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.drawer-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  color: var(--onyx-deep);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.drawer-btn span {
+  font-size: 1.2rem;
+}
+
+.drawer-btn:hover, 
+.drawer-btn:focus {
+  background-color: #f1f5f9;
+  color: var(--brand-crimson);
+  outline: none;
+}
+
+/* Danger Modification (Sign Out) */
+.drawer-btn-danger {
+  color: var(--error-red);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+.drawer-btn-danger:hover,
+.drawer-btn-danger:focus {
+  background-color: #fef2f2;
+  color: #991b1b;
+}
+
+/* Responsive Activation Controls */
+@media (max-width: 992px) {
+  .mobile-bottom-nav { display: flex; }
+  body { padding-bottom: 68px; }
+} 
+/* ADD THIS PART RIGHT HERE: */
+  .support-floating-action-button { 
+    bottom: 84px !important; 
+    right: 16px; 
+    width: 50px; 
+    height: 50px; 
+  }
+
+  </style>
+</head>
+<body>
+  <div class="bg-mesh"></div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <div id="redirectCurtain" class="redirect-curtain">
+    <div class="curtain-loader"></div>
+    <div class="curtain-title" id="curtainTitle">Syncing Identity Matrix...</div>
+    <div class="curtain-subtitle">AVCEARCH SECURE HANDSHAKE</div>
+  </div>
+
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="brand-crest-wrapper">
+        <div class="mini-shield">🦅</div>
+        <span class="logo-text-premium">AV<span>CEARCH</span></span>
+      </div>
+    </a>
+
+    <div class="nav-search" id="navSearch">
+      <div class="search-wrapper">
+        <input type="text" placeholder="Search verified repositories..." id="heroSearchInput" class="form-input search-main-input" autocomplete="off" />
+        <div id="searchDropdown" class="search-dropdown-menu"></div>
+      </div>
+    </div>
+
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="explore.html" class="nav-link active">Explore</a>
+      <a href="ai.html" class="nav-link">🤖 AI Assistant</a>
+      <a href="messages.html" id="messagesNavLink" class="nav-link" style="display: none;">Messages</a>
+      <a href="#" id="signOutBtn" class="nav-link" style="display: none; color: #ef4444;">Sign Out</a>
+    </div>
+    
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <button id="authNavTrigger" class="btn btn-secondary" style="padding: 10px 16px; font-size: 0.9rem; cursor:pointer;">Sign In</button>
+      <a href="upload.html" id="navUploadBtn" class="nav-upload-btn btn-brand-primary">Upload</a>
+      <a href="profile.html" id="navProfileAvatar" class="nav-avatar-link" title="My Profile Portfolio"></a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div style="margin-bottom: 32px; margin-top: 40px;">
+      <h1 style="font-size: 2.25rem; font-weight: 900; margin-bottom: 8px; color: var(--onyx-deep); letter-spacing: -0.02em;">Explore Repository</h1>
+      <p style="color: #64748b; font-size: 1.05rem; margin: 0;">Discover completely un-blocked papers directly running validation tracking logs on live clusters.</p>
+    </div>
+    
+    <div class="category-bar" id="categoryBar">
+      <button class="cat-pill active" data-cat="All">All Research</button>
+      <button class="cat-pill" data-cat="AI & ML">AI & ML</button>
+      <button class="cat-pill" data-cat="Data Science">Data Science</button>
+      <button class="cat-pill" data-cat="Biology">Biology</button>
+      <button class="cat-pill" data-cat="Computer Science">Computer Science</button>
+      <button class="cat-pill" data-cat="Other">Other</button>
+    </div>
+    
+    <div class="research-grid" id="exploreGrid"></div>
+  </div>
+
+  <div id="authModal" class="upload-overlay" style="display: none;">
+    <div id="authProgressCard" class="upload-progress-card">
+      <button id="closeAuthBtn" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
+      
+      <h2 id="authModalTitle" style="margin: 0 0 6px 0; font-weight:900; color: var(--onyx-deep);">Sign In</h2>
+      <p id="authModalSub" style="font-size: 0.85rem; color: #64748b; margin: 0 0 20px 0;">Secure identity validation portal.</p>
+      
+      <div id="systemFeedback" class="system-feedback-banner"></div>
+
+      <form id="authForm" onsubmit="return false;">
+        <div id="usernameFieldContainer" style="margin-bottom: 12px; display: none;">
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--onyx-deep);">Username Handle</label>
+          <input type="text" id="authUsername" class="form-input" placeholder="e.g. academic_pioneer" />
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--onyx-deep);">Email Address</label>
+          <input type="email" id="authEmail" class="form-input" placeholder="name@domain.com" required />
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--onyx-deep);">Password</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="authPassword" class="form-input" placeholder="••••••••" required />
+            <button type="button" id="passwordToggle" class="password-toggle-btn" title="Toggle password visibility">
+              <svg id="eyeIcon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" id="authSubmitBtn" class="upload-submit-btn-brand">
+          <span id="btnText">Verify & Continue</span>
+        </button>
+      </form>
+      
+      <p class="auth-toggle-text" style="text-align: center; font-size: 0.85rem; color: #64748b; margin: 16px 0 0 0;">
+        <span id="togglePromptText">Need system credentials?</span> <span id="authToggleLink" class="auth-toggle-link">Sign Up</span>
+      </p>
+    </div>
+  </div>
+
+  <footer class="premium-footer">
+    <div class="footer-container">
+      <div class="footer-attribution">
+        © 2026 <span>AVCEARCH</span>. All rights reserved. Made by <span>FTAAVC</span> in 2026©
+      </div>
+      <div class="footer-tagline">
+        Academically Validated Community
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://t.me/ftaavc" class="support-floating-action-button" id="supportDeskBtn" title="Secure Operations Support Desk">
+    <svg viewBox="0 0 24 24">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+  </a>
+
+  <div class="mobile-bottom-nav">
+    <a href="index.html" class="mobile-nav-item">
+      <span>🏠</span>
+      <p>Dashboard</p>
+    </a>
+    <a href="explore.html" class="mobile-nav-item active">
+      <span>🔍</span>
+      <p>Explore</p>
+    </a>
+    <a href="upload.html" class="mobile-nav-item mobile-upload-accent">
+      <span class="upload-icon-wrapper">＋</span>
+      <p>Upload</p>
+    </a>
+    <a href="ai.html" class="mobile-nav-item">
+      <span>🤖</span>
+      <p>AI Desk</p>
+    </a>
+    <button type="button" class="mobile-nav-item mobile-profile-node" id="mobileAccountTrigger" style="background:none; border:none; padding:0; cursor:pointer; color: inherit;">
+      <div class="mobile-avatar-placeholder" style="width: 24px; height: 24px; background: var(--premium-grad, #b91c1c); color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; margin: 0 auto 2px auto;">U</div>
+      <p>Account</p>
+    </button>
+  </div>
+
+  <div class="mobile-account-drawer" id="mobileAccountDrawer">
+    <div class="drawer-handle"></div>
+    
+    <div class="drawer-header" style="display: flex; align-items: center; justify-content: space-between; position: relative;">
+      
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div class="drawer-avatar">U</div>
+        <div class="drawer-user-info">
+          <h4 id="drawerUsername" style="margin: 0; font-size: 1.05rem;">Operator Node</h4>
+          <p id="drawerEmail" style="margin: 0;">Connected Mesh Session</p>
+        </div>
+      </div>
+
+      <button type="button" class="drawer-back-btn drawer-close-trigger" id="closeDrawerBtn" aria-label="Close Profile Menu" style="background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--onyx-deep); cursor: pointer;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+    </div>
+
+    <div class="drawer-actions">
+      <a href="profile.html" class="drawer-btn">
+        <span>👤</span> View Profile Portfolio
+      </a>
+    </div>
+  </div>
+
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+</body>
+</html>
+<script>
+// ============================================================================
+// 1. Global Toast Notification Module
+// ============================================================================
+const ToastNotification = {
+  show(text, type = "info") {
+    const container = document.getElementById("toastContainer");
+    if (!container) return;
+
+    const toast = document.createElement("div");
+    toast.className = `toast-card ${type}`;
+    toast.innerHTML = `<div class="toast-text">${text}</div>`;
+    container.appendChild(toast);
+
+    // Smooth entry transition
+    setTimeout(() => toast.classList.add("active"), 50);
+
+    // Auto teardown lifecycle
+    setTimeout(() => {
+      toast.classList.remove("active");
+      setTimeout(() => toast.remove(), 400);
+    }, 4000);
+  }
+};
+
+// Global Exposure for legacy script fallbacks
+window.showPremiumToast = ToastNotification.show;
+
+// ============================================================================
+// 2. Authentication & Node Gateway Module
+// ============================================================================
+const AuthUI = {
+  isSignUpMode: false,
+  originalSubmitText: "",
+
+  SVGS: {
+    error: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`,
+    success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+    eyeOpen: `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`,
+    eyeClosed: `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`
+  },
+
+  init() {
+    this.cacheDOM();
+    if (!this.form) return; 
+    this.bindEvents();
+  },
+
+  cacheDOM() {
+    this.modal = document.getElementById("authModal");
+    this.form = document.getElementById("authForm");
+    this.title = document.getElementById("authModalTitle");
+    this.subtitle = document.getElementById("authModalSub");
+    this.usernameContainer = document.getElementById("usernameFieldContainer");
+    this.usernameInput = document.getElementById("authUsername");
+    this.toggleLink = document.getElementById("authToggleLink");
+    this.togglePrompt = document.getElementById("togglePromptText");
+    this.submitBtn = document.getElementById("authSubmitBtn");
+    this.btnText = document.getElementById("btnText");
+    this.progressCard = document.getElementById("authProgressCard");
+    this.feedback = document.getElementById("systemFeedback");
+    this.passwordToggle = document.getElementById("passwordToggle");
+    this.passwordInput = document.getElementById("authPassword");
+    this.eyeIcon = document.getElementById("eyeIcon");
+    this.redirectCurtain = document.getElementById("redirectCurtain");
+    this.curtainTitle = document.getElementById("curtainTitle");
+    this.supportBtn = document.getElementById("supportDeskBtn");
+    this.closeBtn = document.getElementById("closeAuthBtn");
+  },
+
+  bindEvents() {
+    this.supportBtn?.addEventListener("click", () => {
+      ToastNotification.show("Connecting to AVCEARCH secure live operations support network...", "info");
+    });
+
+    this.passwordToggle?.addEventListener("click", () => this.togglePasswordVisibility());
+    this.toggleLink?.addEventListener("click", () => this.switchMode());
+    this.form.addEventListener("submit", (e) => this.handleSubmit(e));
+  },
+
+  clearFeedback() {
+    if (!this.feedback) return;
+    this.feedback.className = "system-feedback-banner";
+    this.feedback.innerHTML = "";
+    this.progressCard?.classList.remove("auth-card-error-active", "auth-card-success-active");
+  },
+
+  togglePasswordVisibility() {
+    const isPassword = this.passwordInput.type === "password";
+    this.passwordInput.type = isPassword ? "text" : "password";
+    this.eyeIcon.innerHTML = isPassword ? this.SVGS.eyeClosed : this.SVGS.eyeOpen;
+  },
+
+  switchMode() {
+    this.isSignUpMode = !this.isSignUpMode;
+    this.clearFeedback();
+
+    const config = this.isSignUpMode ? {
+      title: "Create Account",
+      sub: "Join the decentralized verification mesh infrastructure.",
+      display: "block",
+      btnText: "Initialize Node Credentials",
+      prompt: "Existing operator credentials?",
+      linkText: "Sign In"
+    } : {
+      title: "Sign In",
+      sub: "Secure identity validation portal.",
+      display: "none",
+      btnText: "Verify & Continue",
+      prompt: "Need system credentials?",
+      linkText: "Sign Up"
+    };
+
+    this.title.textContent = config.title;
+    this.subtitle.textContent = config.sub;
+    this.usernameContainer.style.display = config.display;
+    
+    if (this.isSignUpMode) {
+      this.usernameInput.setAttribute("required", "required");
+    } else {
+      this.usernameInput.removeAttribute("required");
+    }
+
+    this.btnText.textContent = config.btnText;
+    this.togglePrompt.textContent = config.prompt;
+    this.toggleLink.textContent = config.linkText;
+  },
+
+  renderFeedback(status, message) {
+    const isError = status === "error";
+    this.progressCard?.classList.add(isError ? "auth-card-error-active" : "auth-card-success-active");
+    
+    if (this.feedback) {
+      this.feedback.className = `system-feedback-banner ${status} show`;
+      this.feedback.innerHTML = `
+        ${isError ? this.SVGS.error : this.SVGS.success}
+        <div><strong>${isError ? 'Security Handshake Rejected:' : 'Node Handshake Clear:'}</strong> ${message}</div>
+      `;
+    }
+  },
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    this.clearFeedback();
+
+    const email = document.getElementById("authEmail").value;
+    const password = this.passwordInput.value;
+    const username = this.usernameInput.value;
+
+    if (password.length < 6) {
+      this.renderFeedback("error", "Password requires a minimum of 6 characters.");
+      ToastNotification.show("Authentication Failed: Weak Encryption Standard", "error");
+      return;
+    }
+
+    this.submitBtn.disabled = true;
+    this.originalSubmitText = this.btnText.textContent;
+    this.btnText.innerHTML = `<div class="inline-loader"></div> Syncing Cluster Logs...`;
+
+    const eventName = this.isSignUpMode ? "firebaseSignUpRequest" : "firebaseSignInRequest";
+    
+    try {
+      await this.dispatchAuthTransaction(eventName, { email, password, username });
+      
+      this.renderFeedback("success", "Secure configuration successfully accepted.");
+      ToastNotification.show(this.isSignUpMode ? "Node Credentials Initialized!" : "Handshake Verified Successfully!", "success");
+
+      setTimeout(() => {
+        this.closeBtn?.click();
+        if (this.curtainTitle && this.redirectCurtain) {
+          this.curtainTitle.textContent = this.isSignUpMode ? "Provisioning System Profiles..." : "Synchronizing Core Ledgers...";
+          this.redirectCurtain.classList.add("active");
+        }
+        setTimeout(() => window.location.reload(), 2000);
+      }, 1200);
+
+    } catch (error) {
+      this.submitBtn.disabled = false;
+      this.btnText.textContent = this.originalSubmitText;
+      
+      const errMsg = error?.message || "Unknown operational error.";
+      this.renderFeedback("error", errMsg);
+      ToastNotification.show(errMsg, "error");
+    }
+  },
+
+  dispatchAuthTransaction(eventName, payload) {
+    return new Promise((resolve, reject) => {
+      const cleanupHooks = () => {
+        window.removeEventListener(`${eventName}Success`, successHook);
+        window.removeEventListener(`${eventName}Failure`, failureHook);
+      };
+
+      const successHook = (evt) => { cleanupHooks(); resolve(evt.detail); };
+      const failureHook = (evt) => { cleanupHooks(); reject(evt.detail); };
+
+      window.addEventListener(`${eventName}Success`, successHook);
+      window.addEventListener(`${eventName}Failure`, failureHook);
+      
+      window.dispatchEvent(new CustomEvent(eventName, { detail: payload }));
+    });
+  }
+};
+
+// ============================================================================
+// 3. Responsive Navigation Drawer Module
+// ============================================================================
+const DrawerUI = {
+  init() {
+    this.trigger = document.getElementById("mobileAccountTrigger");
+    this.drawer = document.getElementById("mobileAccountDrawer");
+    this.overlay = document.getElementById("drawerOverlay");
+    this.closeBtn = document.getElementById("closeDrawerBtn");
+    this.mobileSignOutBtn = document.getElementById("mobileSignOutBtn");
+    
+    // System layout curtains
+    this.redirectCurtain = document.getElementById("redirectCurtain");
+    this.curtainTitle = document.getElementById("curtainTitle");
+
+    if (!this.drawer) return;
+    this.bindEvents();
+    this.listenForSystemSignOutConfirmation();
+  },
+
+  bindEvents() {
+    this.trigger?.addEventListener("click", () => {
+      const isOpen = this.drawer.classList.contains("open");
+      this.toggle(!isOpen);
+    });
+
+    // Clean, streamlined panel closures
+    this.overlay?.addEventListener("click", () => this.toggle(false));
+    this.closeBtn?.addEventListener("click", () => this.toggle(false));
+    this.drawer.querySelector(".drawer-handle")?.addEventListener("click", () => this.toggle(false));
+    
+    // Sign out interaction triggers
+    this.mobileSignOutBtn?.addEventListener("click", () => this.handleSignOutPipeline());
+    
+    // Desktop link layout intersection trigger (safely runs pipeline directly)
+    document.getElementById("signOutBtn")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.handleSignOutPipeline();
+    });
+  },
+
+  toggle(open) {
+    if (open) {
+      this.overlay?.classList.add("active");
+      this.drawer?.classList.add("open");
+    } else {
+      this.drawer?.classList.remove("open");
+      setTimeout(() => this.overlay?.classList.remove("active"), 200);
+    }
+  },
+
+  // Dispatches straight to backend session handlers instead of simulating clicks
+  handleSignOutPipeline() {
+    this.toggle(false);
+    
+    if (this.curtainTitle) this.curtainTitle.textContent = "Deauthorizing Core Session Ledgers...";
+    if (this.redirectCurtain) this.redirectCurtain.classList.add("active");
+    
+    ToastNotification.show("Terminating security cluster handshake connection...", "info");
+
+    window.dispatchEvent(new CustomEvent("firebaseSignOutRequest"));
+
+    // Async fallback screen update safety wheel
+    this.fallbackTimeout = setTimeout(() => {
+      window.location.reload();
+    }, 3000);
+  },
+
+  listenForSystemSignOutConfirmation() {
+    window.addEventListener("firebaseSignOutRequestSuccess", () => {
+      if (this.fallbackTimeout) clearTimeout(this.fallbackTimeout);
+      window.location.reload();
+    });
+    
+    window.addEventListener("firebaseSignOutRequestFailure", () => {
+      if (this.fallbackTimeout) clearTimeout(this.fallbackTimeout);
+      if (this.redirectCurtain) this.redirectCurtain.classList.remove("active");
+      ToastNotification.show("System alert: Deauthorization handshake failed.", "error");
+    });
+  }
+};
+
+// ============================================================================
+// 4. Initialization Execution Context Loop
+// ============================================================================
+document.addEventListener("DOMContentLoaded", () => {
+  AuthUI.init();
+  DrawerUI.init();
+});
+</script>
+
+<script type="module" src="js/explore.js"></script>
+</body>
+</html>

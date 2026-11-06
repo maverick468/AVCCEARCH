@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AVCEARCH</title>
+  <link rel="icon" type="image/png" href="avc.png" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .messaging-wrapper { 
+  display: flex; 
+  background: var(--cloud-bg); 
+  border: 1px solid var(--cloud-border); 
+  border-radius: 24px; 
+  min-height: 500px;
+  height: 680px; 
+  overflow: hidden; 
+  margin-top: 24px; 
+  position: relative; /* Context anchor for the maintenance overlay */
+}
+
+.chat-sidebar { 
+  flex: 0.9; 
+  border-right: 1px solid var(--cloud-border); 
+  background: rgba(255,255,255,0.4); 
+  display: flex; 
+  flex-direction: column; 
+  filter: blur(2px); 
+  pointer-events: none; 
+}
+
+.sidebar-section-title { 
+  padding: 12px 16px; 
+  font-weight: 800; 
+  font-size: 0.8rem; 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em; 
+  color: var(--text-muted); 
+  background: rgba(0,0,0,0.02); 
+  border-bottom: 1px solid var(--cloud-border); 
+  text-align: left; 
+}
+
+.scrollable-sidebar-area { 
+  flex: 1; 
+  overflow-y: auto; 
+}
+
+.chat-window { 
+  flex: 2; 
+  display: flex; 
+  flex-direction: column; 
+  background: white; 
+  filter: blur(2px); 
+  pointer-events: none; 
+}
+
+.chat-item { 
+  padding: 12px 16px; 
+  border-bottom: 1px solid var(--cloud-border); 
+  cursor: pointer; 
+  transition: background 0.2s; 
+  font-size: 0.9rem; 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
+
+.avatar-placeholder { 
+  width: 36px; 
+  height: 36px; 
+  background: #e2e8f0; 
+  border-radius: 50%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-weight: bold; 
+  font-size: 0.8rem; 
+  color: #64748b; 
+  background-size: cover; 
+  background-position: center; 
+  flex-shrink: 0;
+  border: 1px solid var(--cloud-border);
+}
+
+.chat-header { 
+  padding: 16px; 
+  border-bottom: 1px solid var(--cloud-border); 
+  font-weight: 800; 
+  font-size: 1.1rem; 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
+
+.messages-stream { 
+  flex: 1; 
+  padding: 20px; 
+  overflow-y: auto; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 16px; 
+}
+
+.chat-input-form { 
+  display: flex; 
+  gap: 8px; 
+  padding: 16px; 
+  border-top: 1px solid var(--cloud-border); 
+}
+
+.search-box-wrapper { 
+  padding: 12px; 
+  border-bottom: 1px solid var(--cloud-border); 
+}
+
+/* ── High-Notice Maintenance System Overlay ── */
+.maintenance-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  text-align: center;
+  padding: 32px;
+}
+
+.maintenance-card {
+  background: #ffffff;
+  border: 2px solid #ef4444;
+  border-radius: 20px;
+  padding: 40px 32px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(239, 68, 68, 0.1), 0 10px 10px -5px rgba(239, 68, 68, 0.04);
+}
+
+.maintenance-icon {
+  font-size: 3.5rem;
+  color: #ef4444;
+  margin-bottom: 16px;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.maintenance-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ef4444;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.maintenance-subtitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.maintenance-text {
+  font-size: 0.95rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.9; }
+}
+
+/* ── NEW RESPONSIVE BREAKPOINTS ── */
+@media (max-width: 768px) {
+  .messaging-wrapper {
+    height: calc(100vh - 120px); /* Adapts fluidly to full screens on mobile layout ports */
+    min-height: 480px;
+    border-radius: 16px;
+  }
+  
+  /* Hides sidebar on small viewports so the message stream has full breathing room */
+  .chat-sidebar {
+    display: none;
+  }
+  
+  .chat-window {
+    flex: 1;
+  }
+  
+  .messages-stream {
+    padding: 16px;
+  }
+
+  /* Structural scaling optimizations for the Maintenance warning */
+  .maintenance-overlay {
+    padding: 16px;
+  }
+  
+  .maintenance-card {
+    padding: 32px 20px;
+  }
+  
+  .maintenance-title {
+    font-size: 1.5rem;
+  }
+  
+  .maintenance-subtitle {
+    font-size: 1rem;
+  }
+  
+  .maintenance-text {
+    font-size: 0.88rem;
+  }
+}
+  </style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<nav class="navbar">
+  <a href="index.html" class="nav-logo"><div>🔬</div><span>Research<span>Hub</span></span></a>
+  <div style="display:flex; gap:12px; align-items: center;">
+    <button onclick="history.back()" class="btn btn-secondary" style="display: flex; align-items: center; gap: 6px;">
+      <span>←</span> Back
+    </button>
+    <a href="explore.html" class="btn btn-secondary">Explore</a>
+  </div>
+</nav>
+
+<div class="page-wrapper" style="max-width:1100px;">
+  <div class="messaging-wrapper">
+    
+    <div class="maintenance-overlay">
+      <div class="maintenance-card">
+        <div class="maintenance-icon">⚠️</div>
+        <div class="maintenance-title">Coming Soon</div>
+        <div class="maintenance-subtitle">Under Maintenance</div>
+        <p class="maintenance-text">
+          Our real-time messaging pipeline is undergoing database synchronization optimization to ensure secure and instant peer-to-peer discussions. Thread options will unlock shortly.
+        </p>
+      </div>
+    </div>
+
+    <div class="chat-sidebar" id="roomsSidebar">
+      <div class="search-box-wrapper">
+        <input type="text" id="userSearchInput" class="form-input" style="padding: 8px 12px; font-size: 0.85rem;" placeholder="🔍 Search peers by name..." disabled />
+      </div>
+      
+      <div class="scrollable-sidebar-area">
+        <div class="sidebar-section-title">All Registered Peers</div>
+        <div id="usersDiscoveryContainer">
+          <div class="chat-item"><div class="avatar-placeholder">AP</div><div style="font-weight:600; color:#cbd5e1;">@academic_peer</div></div>
+        </div>
+
+        <div class="sidebar-section-title" style="margin-top: 8px;">Active Threads</div>
+        <div id="roomsContainer"></div>
+      </div>
+    </div>
+    
+    <div class="chat-window">
+      <div class="chat-header" id="activeChatHeader">
+         <div class="avatar-placeholder" id="activeChatAvatar" style="display:none;"></div>
+         <span id="activeChatHeaderText" style="color:#94a3b8;">Select a conversation thread</span>
+      </div>
+      <div class="messages-stream" id="messagesStream"></div>
+      <form id="chatForm" class="chat-input-form" onsubmit="return false;">
+        <input type="text" id="chatInput" class="form-input" placeholder="Messaging is temporarily locked..." required disabled />
+        <button type="submit" class="btn btn-primary" style="padding:0 24px; background:#cbd5e1; border-color:#cbd5e1;" disabled>Send</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script type="module" src="js/messages.js"></script>
+</body>
+</html>
